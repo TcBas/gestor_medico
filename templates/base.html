@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestor Médico</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/1055/1055646.png" type="image/png">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      background-color: #112240;
+      height: 100vh;
+      width: 100vw;
+      position: relative;
+      font-family: 'Poppins', sans-serif;
+      box-sizing: border-box;
+      overflow-x: hidden;
+    }
+
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 60px;
+      background: rgba(17, 34, 64, 0.6);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(79, 167, 255, 0.2);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 20px;
+      z-index: 100;
+      box-sizing: border-box;
+    }
+
+    .logo a {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: white;
+      text-decoration: none;
+    }
+
+    .menu {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .navbar a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      padding: 8px 12px;
+      border: 2px solid #4fa7ff;
+      border-radius: 8px;
+      white-space: nowrap;
+      max-width: 150px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .navbar a:hover {
+      background-color: rgba(79, 167, 255, 0.9);
+      color: #112240;
+      box-shadow: 0 0 10px #4fa7ff;
+    }
+
+    .hamburger {
+      display: none;
+      font-size: 24px;
+      cursor: pointer;
+      color: white;
+    }
+
+    @media (max-width: 768px) {
+      .menu {
+        display: none;
+        flex-direction: column;
+        background-color: rgba(17, 34, 64, 0.95);
+        position: absolute;
+        top: 60px;
+        right: 0;
+        width: 200px;
+        border-left: 1px solid #4fa7ff;
+      }
+
+      .menu a {
+        border: none;
+        border-bottom: 1px solid #4fa7ff;
+        padding: 12px;
+        border-radius: 0;
+      }
+
+      .hamburger {
+        display: block;
+      }
+
+      .menu.show {
+        display: flex;
+      }
+    }
+
+    .fondo-iluminado {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        90deg,
+        transparent 40%,
+        rgba(79, 167, 255, 0.8) 50%,
+        transparent 60%
+      );
+      animation: barrido 5s linear infinite;
+      z-index: 1;
+      pointer-events: none;
+      filter: blur(10px) brightness(1.3);
+    }
+
+    @keyframes barrido {
+      from { transform: translateX(-100%); }
+      to { transform: translateX(100%); }
+    }
+
+    .rejilla {
+      display: grid;
+      gap: 2px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: auto; /* Activar eventos sobre la rejilla */
+      z-index: 1;
+    }
+
+    .cuadro {
+      background-color: #121212;
+      width: var(--tamano-cuadro);
+      height: var(--tamano-cuadro);
+      opacity: 1;
+      transition: opacity 0.5s ease;
+      pointer-events: auto;  /* Necesario para que cada cuadro pueda escuchar el hover */
+    }
+
+    .cuadro.desvanecido {
+      opacity: 0;
+    }
+    /* === Efectos Especiales === */
+.main-container {
+  position: relative;
+  z-index: 3;
+  min-height: calc(100vh - 60px);
+  padding-top: 60px;
+}
+
+/* Sección Hero */
+.hero-section {
+  height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-content {
+  display: flex;
+  align-items: center;
+justify-content: center;
+gap: 80px; /* Ajusta el espacio entre el texto y la tarjeta */
+  width: 90%;
+  max-width: 1200px;
+  z-index: 2;
+}
+
+.hero-text {
+  flex: 1;
+  max-width: 600px;
+}
+
+.hero-title {
+  font-size: 4rem;
+  background: linear-gradient(90deg, #4fa7ff, #a1c8ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  margin-bottom: 1rem;
+  text-shadow: 0 0 20px rgba(79, 167, 255, 0.3);
+}
+
+.hero-title span {
+  display: block;
+  font-size: 2.5rem;
+}
+
+.hero-subtitle {
+  font-size: 1.5rem;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 2rem;
+}
+
+/* Tarjeta flotante */
+.floating-card {
+  width: 320px;
+  perspective: 1000px;
+}
+
+.card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.8s;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(15px);
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 25px 45px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  animation: float 6s ease-in-out infinite;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-20px); }
+}
+
+.medical-icon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 20px;
+  display: block;
+  fill: none;
+  stroke: #4fa7ff;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Botón con efecto de borde luminoso */
+.glowing-btn {
+  position: relative;
+  display: inline-block;
+  padding: 15px 30px;
+  margin: 20px 0;
+  color: #4fa7ff;
+  text-decoration: none;
+  text-transform: uppercase;
+  overflow: hidden;
+  transition: 0.5s;
+  letter-spacing: 2px;
+  background: transparent;
+  border: none;
+  font-weight: 600;
+  border: 2px solid #4fa7ff; /* Borde tipo cuadro */
+  border-radius: 10px;
+  padding: 15px 30px;
+}
+
+.glowing-btn:hover {
+  background: #4fa7ff;
+  color: #112240;
+  box-shadow: 0 0 10px #4fa7ff, 0 0 40px #4fa7ff;
+}
+
+.glowing-btn span {
+  position: absolute;
+  display: block;
+}
+
+.glowing-btn span:nth-child(1) {
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #4fa7ff);
+  animation: btn-anim1 2s linear infinite;
+}
+
+@keyframes btn-anim1 {
+  0% { left: -100%; }
+  50%,100% { left: 100%; }
+}
+
+/* Efecto de olas */
+.waves {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100px;
+  overflow: hidden;
+}
+
+.wave {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 200%;
+  height: 100%;
+  background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1200 120" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"><path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" fill="rgba(9,167,255,0.15)"/></svg>');
+  background-repeat: repeat no-repeat;
+  background-position: 0 bottom;
+  animation: wave 15s linear infinite;
+}
+
+.wave1 {
+  opacity: 0.7;
+  animation-delay: 0s;
+  bottom: 0;
+}
+
+.wave2 {
+  opacity: 0.4;
+  animation-delay: -5s;
+  bottom: 10px;
+  animation-duration: 20s;
+}
+
+.separator-waves {
+  position: relative; /* MUY IMPORTANTE: no absolute aquí */
+  width: 100%;
+  height: 125px;
+  transform: rotate(180deg);
+  overflow: hidden;
+  z-index: 2;
+  margin-top: -50px;  /* Aquí la subes. Aumenta el valor negativo para que suba más */
+}
+
+.waves.footer-waves {
+  bottom: -100px;  /* Puedes ajustar -30px, -40px, -50px según qué tan abajo quieras */
+}
+
+
+@keyframes wave {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* Tarjetas de características */
+.features {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 30px;
+  padding: 80px 20px;
+  position: relative;
+}
+
+.feature-card {
+  width: 280px;
+  padding: 40px 20px;
+  text-align: center;
+  background: rgba(17, 34, 64, 0.6);
+  border-radius: 15px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(79, 167, 255, 0.2);
+  transition: transform 0.3s, box-shadow 0.3s;
+  box-shadow: 0 10px 25px rgba(79, 167, 255, 0.15);
+}
+
+.feature-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 30px rgba(79, 167, 255, 0.2);
+}
+
+.hexagon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 20px;
+  position: relative;
+}
+
+.hexagon svg {
+  width: 100%;
+  height: 100%;
+  fill: rgba(79, 167, 255, 0.1);
+}
+
+.hexagon i {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 30px;
+  color: #4fa7ff;
+}
+
+.feature-card h4 {
+  color: #4fa7ff;
+  margin: 15px 0;
+  font-size: 1.3rem;
+}
+
+.feature-card p {
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.6;
+}
+
+/* Animación de entrada suave */
+.fade-in {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 1s ease-out forwards;
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.glowing-btn {
+  box-shadow: 0 0 10px #4fa7ff, 0 0 20px #4fa7ff;
+  animation: glowPulse 2s ease-in-out infinite alternate;
+}
+
+@keyframes glowPulse {
+  0% { box-shadow: 0 0 10px #4fa7ff, 0 0 20px #4fa7ff; }
+  100% { box-shadow: 0 0 20px #4fa7ff, 0 0 40px #4fa7ff; }
+}
+
+.login-wrapper {
+  pointer-events: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  position: relative;
+  z-index: 3;
+}
+
+.login-form {
+  pointer-events: auto;
+  background: rgba(17, 34, 64, 0.85);
+  padding: 40px;
+  border: 2px solid #4fa7ff;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(79, 167, 255, 0.2);
+  width: 300px;
+  text-align: center;
+}
+
+.login-form h2 {
+  color: #4fa7ff;
+  margin-bottom: 20px;
+}
+
+.login-form input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border: none;
+  border-radius: 6px;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: white;
+}
+
+.login-form button {
+  padding: 12px;
+  width: 100%;
+  background-color: #4fa7ff;
+  border: none;
+  border-radius: 6px;
+  color: #112240;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.login-form button:hover {
+  background-color: #3a8fe0;
+}
+
+/* El contenido principal no bloquea el puntero (excepto formularios) */
+.contenido, .main-container, .login-wrapper {
+  pointer-events: none;
+  position: relative;
+  z-index: 2;
+}
+
+/* Los formularios sí pueden recibir interacción */
+.login-form, input, button, .glowing-btn {
+  pointer-events: auto;
+}
+
+.login-form select {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 6px;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: white;
+  appearance: none;  /* Oculta el icono nativo */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%234fa7ff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-chevron-down'%3E%3Cpath d='M6 9l6 6 6-6'%3E%3C/path%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px;
+  cursor: pointer;
+}
+
+.login-form select option {
+  background-color: #112240;
+  color: white;
+}
+
+
+.login-form label {
+  color: rgba(255, 255, 255, 0.8);  /* Blanco semi-transparente */
+  font-weight: 500;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.registro-wrapper {
+  padding-top: 150px;  /* Solo afecta al registro */
+  min-height: calc(100vh - 60px);
+}
+
+
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <div class="logo">
+      <a href="{% url 'index' %}">Gestor Médico</a>
+    </div>
+    <div class="hamburger" onclick="toggleMenu()">☰</div>
+    <div class="menu" id="menu">
+      <a href="#">Ayuda</a>
+<a href="{% url 'registro_estudiante' %}">Registrarse</a>
+
+    </div>
+  </div>
+
+  <div class="fondo-iluminado"></div>
+  <div class="rejilla" id="rejilla"></div>
+
+  <div class="contenido" style="position: relative; z-index: 3;">
+    {% block content %}{% endblock %}
+  </div>
+
+  <script>
+const tamanoCuadro = 50;
+document.documentElement.style.setProperty('--tamano-cuadro', `${tamanoCuadro}px`);
+
+function crearRejilla() {
+  const rejilla = document.getElementById('rejilla');
+  rejilla.innerHTML = ''; // Limpiar cuadros anteriores
+
+  const anchoPantalla = window.innerWidth;
+  const altoPantalla = window.innerHeight;  // AHORA SOLO el viewport
+
+  const columnas = Math.ceil(anchoPantalla / (tamanoCuadro + 2)) + 2;
+  const filas = Math.ceil(altoPantalla / (tamanoCuadro + 2)) + 2;
+
+  rejilla.style.gridTemplateColumns = `repeat(${columnas}, ${tamanoCuadro}px)`;
+  rejilla.style.gridTemplateRows = `repeat(${filas}, ${tamanoCuadro}px)`;
+
+  for (let i = 0; i < filas * columnas; i++) {
+    const cuadro = document.createElement('div');
+    cuadro.className = 'cuadro';
+    
+    cuadro.addEventListener('mouseenter', () => {
+      cuadro.classList.add('desvanecido');
+      setTimeout(() => {
+        cuadro.classList.remove('desvanecido');
+      }, 500);
+    });
+
+    rejilla.appendChild(cuadro);
+  }
+}
+
+crearRejilla();
+window.addEventListener('resize', crearRejilla);
+
+
+  </script>
+</body>
+</html>

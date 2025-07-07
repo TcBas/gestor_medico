@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="login-wrapper registro-wrapper">
+
+  <!-- Mostrar errores del formulario -->
+  {% if form.errors %}
+  <div class="form-errors">
+    <ul>
+      {% for field in form %}
+        {% for error in field.errors %}
+          <li>{{ field.label }}: {{ error }}</li>
+        {% endfor %}
+      {% endfor %}
+      {% for error in form.non_field_errors %}
+        <li>{{ error }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+  {% endif %}
+
+  <form class="login-form" method="POST" style="max-width: 600px; width: 100%;">
+    {% csrf_token %}
+    <h2 style="margin-bottom: 30px;">Registro de Estudiante</h2>
+    
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px 30px;">
+      <div>
+        {{ form.username.label_tag }}
+        {{ form.username }}
+      </div>
+      <div>
+        {{ form.password.label_tag }}
+        {{ form.password }}
+      </div>
+
+      <div>
+        {{ form.email.label_tag }}
+        {{ form.email }}
+      </div>
+      <div>
+        {{ form.nombres.label_tag }}
+        {{ form.nombres }}
+      </div>
+
+      <div>
+        {{ form.apellido_paterno.label_tag }}
+        {{ form.apellido_paterno }}
+      </div>
+      <div>
+        {{ form.apellido_materno.label_tag }}
+        {{ form.apellido_materno }}
+      </div>
+
+      <div>
+        {{ form.dni.label_tag }}
+        {{ form.dni }}
+      </div>
+      <div>
+        {{ form.telefono.label_tag }}
+        {{ form.telefono }}
+      </div>
+
+      <div>
+        {{ form.direccion.label_tag }}
+        {{ form.direccion }}
+      </div>
+      <div>
+        {{ form.fecha_nacimiento.label_tag }}
+        {{ form.fecha_nacimiento }}
+      </div>
+
+      <div>
+        {{ form.codigo_matricula.label_tag }}
+        {{ form.codigo_matricula }}
+      </div>
+      <div>
+        {{ form.carrera.label_tag }}
+        {{ form.carrera }}
+      </div>
+    </div>
+
+    <button type="submit" class="glowing-btn" style="margin-top: 30px;">Registrarse</button>
+  </form>
+</div>
+
+<!-- Estilo para errores -->
+<style>
+.form-errors {
+  background-color: #ffdddd;
+  border: 1px solid #ff5c5c;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+.form-errors ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+</style>
+{% endblock %}

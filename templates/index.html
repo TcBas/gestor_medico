@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block title %}Inicio - Gestor Médico{% endblock %}
+
+{% block content %}
+<main class="main-container">
+  <!-- Sección Hero con efecto parallax -->
+  <section class="hero-section">
+    <div class="hero-content">
+      <div class="hero-text fade-in">
+        <h1 class="hero-title">Gestor Médico <span>Universitario</span></h1>
+        <p class="hero-subtitle">Innovación en gestión de salud académica</p>
+        <p class="hero-subtitle" style="font-size: 1.1rem;">
+          Gestor Médico es una plataforma universitaria que te ayuda a gestionar tus citas médicas, 
+          acceder a tus registros de salud y conectar con profesionales, todo en un solo lugar.
+        </p>
+      </div>
+      
+      <!-- Tarjeta flotante interactiva -->
+      <div class="floating-card">
+        <div class="card-inner">
+          <svg class="medical-icon" viewBox="0 0 24 24">
+            <path d="M12 2L2 7v10l10 5 10-5V7L12 2z"></path>
+            <path d="M12 12l-5-1M12 12v5M12 12l5-1M12 12l-3 4M12 12l3 4"></path>
+          </svg>
+          <h3>Acceso Seguro</h3>
+          <a href="{% url 'login' %}" class="glowing-btn">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            Iniciar Sesión
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<!-- Separador Ola Invertida -->
+<div class="waves separator-waves">
+  <div class="wave wave1"></div>
+  <div class="wave wave2"></div>
+</div>
+
+
+  <!-- Tarjetas de características -->
+  <section class="features">
+    <div class="feature-card">
+      <div class="hexagon">
+        <svg viewBox="0 0 100 100">
+          <polygon points="50 1 95 25 95 75 50 99 5 75 5 25"></polygon>
+        </svg>
+        <i class="fas fa-user-shield"></i>
+      </div>
+      <h4>Privacidad</h4>
+      <p>Datos protegidos con cifrado de última generación</p>
+    </div>
+    
+    <div class="feature-card">
+      <div class="hexagon">
+        <svg viewBox="0 0 100 100">
+          <polygon points="50 1 95 25 95 75 50 99 5 75 5 25"></polygon>
+        </svg>
+        <i class="fas fa-bolt"></i>
+      </div>
+      <h4>Rapidez</h4>
+      <p>Interfaz optimizada para flujo de trabajo ágil</p>
+    </div>
+    
+    <div class="feature-card">
+      <div class="hexagon">
+        <svg viewBox="0 0 100 100">
+          <polygon points="50 1 95 25 95 75 50 99 5 75 5 25"></polygon>
+        </svg>
+        <i class="fas fa-graduation-cap"></i>
+      </div>
+      <h4>Académico</h4>
+      <p>Herramientas diseñadas para formación médica</p>
+    </div>
+  </section>
+
+  <!-- Olas decorativas al pie -->
+  <div class="waves footer-waves">
+    <div class="wave wave1"></div>
+    <div class="wave wave2"></div>
+  </div>
+</main>
+{% endblock %}
