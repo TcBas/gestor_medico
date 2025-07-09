@@ -28,10 +28,15 @@
         {{ form.username.label_tag }}
         {{ form.username }}
       </div>
-      <div>
-        {{ form.password.label_tag }}
-        {{ form.password }}
-      </div>
+<div style="position: relative;">
+  {{ form.password.label_tag }}
+  {{ form.password }}
+</div>
+
+<div style="position: relative;">
+  {{ form.confirm_password.label_tag }}
+  {{ form.confirm_password }}
+</div>
 
       <div>
         {{ form.email.label_tag }}
@@ -82,6 +87,18 @@
     <button type="submit" class="glowing-btn" style="margin-top: 30px;">Registrarse</button>
   </form>
 </div>
+
+<!-- Script para mostrar/ocultar contraseña -->
+<script>
+  function togglePassword(fieldId) {
+    const field = document.getElementById(fieldId);
+    if (field.type === "password") {
+      field.type = "text";
+    } else {
+      field.type = "password";
+    }
+  }
+</script>
 
 <!-- Estilo para errores -->
 <style>

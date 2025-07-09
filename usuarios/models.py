@@ -14,6 +14,13 @@ TIPOS = [
     ('estudiante', 'Estudiante'),
 ]
 
+#Estados de Citas
+ESTADOS = [
+    ('Pendiente', 'Pendiente'),
+    ('Aceptada', 'Aceptada'),
+    ('Rechazada', 'Rechazada'),
+]
+
 class Perfil(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     tipo = models.CharField(max_length=20, choices=TIPOS)
@@ -36,7 +43,6 @@ class Perfil(models.Model):
     def __str__(self):
         return f'{self.user.username} - {self.tipo}'
 
-
 class Cita(models.Model):
     estudiante = models.ForeignKey(
         Perfil,
@@ -51,7 +57,7 @@ class Cita(models.Model):
         limit_choices_to={'tipo': 'doctor'}
     )
     fecha = models.DateTimeField()
-    estado = models.CharField(max_length=50)
+    estado = models.CharField(max_length=50, choices=ESTADOS, default='Pendiente')
     motivo = models.TextField()
 
     def __str__(self):

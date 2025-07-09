@@ -4,9 +4,10 @@ from .models import Perfil
 
 class RegistroEstudianteForm(forms.ModelForm):
     username = forms.CharField(max_length=150)
-    password = forms.CharField(widget=forms.PasswordInput)
+    password = forms.CharField(widget=forms.PasswordInput, label='Contraseña')
+    confirm_password = forms.CharField(widget=forms.PasswordInput, label='Confirmar Contraseña')  # NUEVO CAMPO
     email = forms.EmailField()
-    fecha_nacimiento = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))  # ✅ Aquí el calendario
+    fecha_nacimiento = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))  # ✅ Calendario
 
     class Meta:
         model = Perfil
@@ -14,6 +15,14 @@ class RegistroEstudianteForm(forms.ModelForm):
             'nombres', 'apellido_paterno', 'apellido_materno', 'dni', 'telefono',
             'direccion', 'fecha_nacimiento', 'codigo_matricula', 'carrera'
         ]
+
+    def clean(self):
+        cleaned_data = super().clean()
+        password = cleaned_data.get('password')
+        confirm_password = cleaned_data.get('confirm_password')
+
+        if password and confirm_password and password != confirm_password:
+            self.add_error('confirm_password', "Las contraseñas no coinciden.")  # Validación
 
     def save(self, commit=True):
         user = User.objects.create_user(

@@ -4,7 +4,22 @@
 <div class="contenido">
   <div style="text-align: center; padding: 50px; color: white;">
     <h1>Bienvenido, Doctor</h1>
-    <p>Esta es tu vista personalizada como doctor.</p>
+    <p>Estas son tus citas aceptadas:</p>
+
+    {% if citas_aceptadas %}
+      <ul style="list-style: none; padding: 0;">
+        {% for cita in citas_aceptadas %}
+          <li style="margin-bottom: 20px; background-color: #333; padding: 15px; border-radius: 8px;">
+            <strong>Estudiante:</strong> {{ cita.estudiante.nombres }} {{ cita.estudiante.apellido_paterno }}<br>
+            <strong>Fecha:</strong> {{ cita.fecha|date:"d/m/Y H:i" }}<br>
+            <strong>Motivo:</strong> {{ cita.motivo }}
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>No tienes citas aceptadas actualmente.</p>
+    {% endif %}
+
     <a href="{% url 'logout' %}" class="glowing-btn" style="display:inline-block; margin-top:20px;">Cerrar Sesión</a>
   </div>
 </div>

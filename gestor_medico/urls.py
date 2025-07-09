@@ -1,39 +1,22 @@
-"""
-URL configuration for gestor_medico project.
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/5.2/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
 from django.contrib import admin
 from django.urls import path
-from .views import index  # Importa específicamente la vista index
-from django.contrib.auth import views as auth_views  # Importa las vistas de autenticación
-from usuarios.views import registro_estudiante
-from usuarios import views
-
+from .views import index  # Importa la vista index principal
+from usuarios import views  # Importa tus vistas personalizadas
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', index, name='index'),  # Página principal
-        # Nueva ruta para el login:
-path('login/', auth_views.LoginView.as_view(
-    template_name='login.html',
-    redirect_authenticated_user=True  # Esto ya lo tienes
-), name='login'),
-path('registro/', registro_estudiante, name='registro_estudiante'),
-path('registro/', views.registro_estudiante, name='registro'),
-path('vista_estudiante/', views.vista_estudiante, name='vista_estudiante'),
-path('vista_doctor/', views.vista_doctor, name='vista_doctor'),
-path('logout/', views.logout_view, name='logout'),
 
+    # ✅ Login con tu vista personalizada que redirige según tipo de usuario
+    path('login/', views.login_view, name='login'),
+
+    # ✅ Registro de usuario (dejamos solo esta)
+    path('registro/', views.registro_estudiante, name='registro'),
+
+    # ✅ Vistas según rol
+    path('vista_estudiante/', views.vista_estudiante, name='vista_estudiante'),
+    path('vista_doctor/', views.vista_doctor, name='vista_doctor'),
+
+    # ✅ Cierre de sesión
+    path('logout/', views.logout_view, name='logout'),
 ]
