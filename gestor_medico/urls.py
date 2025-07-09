@@ -32,4 +32,8 @@ path('login/', auth_views.LoginView.as_view(
 ), name='login'),
 path('registro/', registro_estudiante, name='registro_estudiante'),
 path('registro/', views.registro_estudiante, name='registro'),
+path('vista_estudiante/', views.vista_estudiante, name='vista_estudiante'),
+path('vista_doctor/', views.vista_doctor, name='vista_doctor'),
+path('logout/', views.logout_view, name='logout'),
+
 ]
