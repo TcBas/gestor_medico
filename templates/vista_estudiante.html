@@ -1,59 +1,262 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<style>
+  .contenido {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 90px 20px 40px;
+    min-height: 100vh;
+    position: relative;
+    z-index: 3;
+  }
+  
+  .seccion-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 40px;
+    width: 100%;
+    max-width: 1200px;
+    margin-top: 20px;
+  }
+  
+  .seccion {
+    flex: 1;
+    background-color: rgba(44, 47, 72, 0.8);
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+    color: white;
+    min-width: 300px;
+    max-width: 500px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(79, 167, 255, 0.3);
+    animation: float 6s ease-in-out infinite;
+  }
+  
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+  
+  .titulo-destacado {
+    font-size: 2.2rem;
+    background: linear-gradient(90deg, #4fa7ff, #a1c8ff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin-bottom: 1rem;
+    text-shadow: 0 0 20px rgba(79, 167, 255, 0.3);
+  }
+  
+  .mensaje-cita {
+    background-color: rgba(255, 79, 79, 0.2);
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 79, 79, 0.5);
+    text-align: center;
+    margin-bottom: 20px;
+    backdrop-filter: blur(5px);
+  }
+  
+  .mensaje-cita h2 {
+    color: #ffb3b3;
+    margin: 5px 0;
+    font-size: 1.8rem;
+  }
+  
+  .mensaje-cita p {
+    color: #ffb3b3;
+    margin: 5px 0;
+  }
+  
+  .mensaje-cita strong {
+    color: white;
+    font-weight: bold;
+    font-size: 1.2rem;
+  }
+  
+  .login-form {
+    background-color: rgba(44, 47, 72, 0.8);
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(79, 167, 255, 0.3);
+    animation: float 6s ease-in-out infinite;
+    width: 100%;
+  }
+  
+  label {
+    display: block;
+    margin-top: 15px;
+    font-weight: bold;
+    text-align: left;
+    color: rgba(255, 255, 255, 0.9);
+  }
+  
+  input[type="datetime-local"],
+  select,
+  textarea {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    margin-top: 5px;
+    border-radius: 6px;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+    border: 1px solid rgba(79, 167, 255, 0.3);
+  }
+  
+  textarea {
+    resize: vertical;
+    min-height: 100px;
+  }
+  
+  .glowing-btn {
+    display: inline-block;
+    background: transparent;
+    color: #4fa7ff;
+    padding: 12px 30px;
+    border-radius: 8px;
+    font-weight: bold;
+    text-decoration: none;
+    transition: 0.3s ease;
+    border: 2px solid #4fa7ff;
+    cursor: pointer;
+    font-size: 16px;
+    box-shadow: 0 0 10px rgba(79, 167, 255, 0.3);
+    text-align: center;
+    width: 100%;
+    margin-top: 20px;
+  }
+  
+  .glowing-btn:hover {
+    background: #4fa7ff;
+    color: #112240;
+    box-shadow: 0 0 20px rgba(79, 167, 255, 0.8);
+  }
+  
+  .cita-item {
+    background-color: rgba(26, 29, 51, 0.7);
+    border: 1px solid #4fa7ff;
+    border-radius: 10px;
+    padding: 15px;
+    margin-top: 15px;
+    text-align: left;
+    backdrop-filter: blur(5px);
+    transition: transform 0.3s;
+  }
+  
+  .cita-item:hover {
+    transform: translateY(-5px);
+  }
+  
+  .cita-item strong {
+    color: #4fa7ff;
+  }
+  
+  .no-citas {
+    color: #aaa;
+    text-align: center;
+    padding: 20px;
+  }
+  
+  .historial-header {
+    font-size: 2.2rem;
+    background: linear-gradient(90deg, #4fa7ff, #a1c8ff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin-bottom: 1rem;
+    text-shadow: 0 0 20px rgba(79, 167, 255, 0.3);
+    text-align: center;
+  }
+  
+  @media (max-width: 768px) {
+    .seccion-container {
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .seccion {
+      width: 100%;
+      max-width: 100%;
+    }
+  }
+</style>
+
 <div class="contenido">
-  <div class="login-wrapper">
-    {% if citas_esta_semana %}
-      <h2 style="color: #ff4f4f;">Ya tienes una cita esta semana.</h2>
-      <p>Podrás agendar otra cita desde:</p>
-      <p style="font-weight: bold; color: white;">
-        {{ proxima_fecha|date:"d/m/Y H:i" }}
-      </p>
-      <a href="{% url 'logout' %}" class="glowing-btn" style="margin-top: 20px; display: inline-block;">Cerrar Sesión</a>
-    {% else %}
-      <form class="login-form" method="POST">
-        {% csrf_token %}
-        <h2>Solicitar Cita Médica</h2>
+  <div class="seccion-container">
+    <!-- Sección de formulario/historial -->
+    <div class="seccion">
+      {% if citas_esta_semana %}
+        <div class="mensaje-cita">
+          <h2>Ya tienes una cita esta semana.</h2>
+          <p>Podrás agendar otra cita desde:</p>
+          <p><strong>{{ proxima_fecha|date:"d/m/Y H:i" }}</strong></p>
+          <a href="{% url 'logout' %}" class="glowing-btn">Cerrar Sesión</a>
+        </div>
+      {% else %}
+        <form class="login-form" method="POST">
+          {% csrf_token %}
+          <h2 class="titulo-destacado">Solicitar Cita Médica</h2>
+          
+          <label for="doctor">Seleccionar Doctor:</label>
+          <select name="doctor" id="doctor" required>
+            <option value="">-- Selecciona un Doctor --</option>
+            {% for doctor in doctores %}
+              <option value="{{ doctor.id }}">{{ doctor.nombres }} {{ doctor.apellido_paterno }}</option>
+            {% endfor %}
+          </select>
 
-        <label for="doctor">Seleccionar Doctor:</label>
-        <select name="doctor" id="doctor" required>
-          <option value="">-- Selecciona un Doctor --</option>
-          {% for doctor in doctores %}
-            <option value="{{ doctor.id }}">{{ doctor.nombres }} {{ doctor.apellido_paterno }}</option>
+          <label for="fecha">Fecha y Hora de la Cita:</label>
+          <input type="datetime-local" name="fecha" id="fecha" required>
+
+          <label for="motivo">Motivo de la Cita:</label>
+          <textarea name="motivo" id="motivo" required placeholder="Escribe el motivo de la cita..."></textarea>
+
+          <button type="submit" class="glowing-btn">Agendar Cita</button>
+          <a href="{% url 'logout' %}" class="glowing-btn">Cerrar Sesión</a>
+        </form>
+      {% endif %}
+    </div>
+
+    <!-- Sección de historial -->
+    <div class="seccion">
+      <h2 class="historial-header">Historial de Citas</h2>
+      {% if citas %}
+        <ul style="list-style: none; padding: 0;">
+          {% for cita in citas %}
+            <li class="cita-item">
+              <strong>Doctor:</strong> {{ cita.doctor.nombres }} {{ cita.doctor.apellido_paterno }}<br>
+              <strong>Fecha:</strong> {{ cita.fecha|date:"d/m/Y H:i" }}<br>
+              <strong>Motivo:</strong> {{ cita.motivo }}<br>
+              <strong>Estado:</strong> {{ cita.estado }}
+            </li>
           {% endfor %}
-        </select>
-
-        <label for="fecha">Fecha y Hora de la Cita:</label>
-        <input type="datetime-local" name="fecha" id="fecha" required>
-
-        <label for="motivo">Motivo de la Cita:</label>
-        <textarea name="motivo" id="motivo" rows="3" required placeholder="Escribe el motivo de la cita..."></textarea>
-
-        <button type="submit" class="glowing-btn">Agendar Cita</button>
-
-        <!-- Botón de Cerrar Sesión -->
-        <a href="{% url 'logout' %}" class="glowing-btn" style="margin-top: 20px; display: inline-block;">Cerrar Sesión</a>
-      </form>
-    {% endif %}
-  </div>
-
-  <!-- Historial de Citas -->
-  <div class="login-wrapper" style="margin-top: 40px;">
-    <h2 style="color: #4fa7ff;">Historial de Citas</h2>
-    {% if citas %}
-      <ul style="list-style: none; padding: 0;">
-        {% for cita in citas %}
-          <li style="border: 1px solid #4fa7ff; border-radius: 8px; padding: 15px; margin-bottom: 15px;">
-            <strong>Doctor:</strong> {{ cita.doctor.nombres }} {{ cita.doctor.apellido_paterno }}<br>
-            <strong>Fecha:</strong> {{ cita.fecha|date:"d/m/Y H:i" }}<br>
-            <strong>Motivo:</strong> {{ cita.motivo }}<br>
-            <strong>Estado:</strong> {{ cita.estado }}
-          </li>
-        {% endfor %}
-      </ul>
-    {% else %}
-      <p style="color: white;">No tienes citas registradas.</p>
-    {% endif %}
+        </ul>
+      {% else %}
+        <p class="no-citas">No tienes citas registradas.</p>
+      {% endif %}
+    </div>
   </div>
 </div>
+
+<script>
+  // Establecer fecha mínima (hoy) y máxima (2 meses) para el campo de fecha
+  window.addEventListener('DOMContentLoaded', () => {
+    const hoy = new Date();
+    const maxDate = new Date();
+    maxDate.setMonth(maxDate.getMonth() + 2);
+    
+    const fechaInput = document.getElementById('fecha');
+    if(fechaInput) {
+      fechaInput.min = hoy.toISOString().slice(0, 16);
+      fechaInput.max = maxDate.toISOString().slice(0, 16);
+    }
+  });
+</script>
 {% endblock %}

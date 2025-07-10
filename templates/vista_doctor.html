@@ -1,26 +1,103 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<style>
+  .contenido {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    padding: 30px;
+    background: #1e1e2f;
+    min-height: 100vh;
+    font-family: 'Segoe UI', sans-serif;
+    flex-wrap: wrap;
+    text-align: center;
+  }
+
+  .seccion {
+    flex: 1;
+    background-color: #2c2f48;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+    color: white;
+    min-width: 300px;
+    max-width: 500px;
+  }
+
+  h1 {
+    color: #00bfff;
+    margin-bottom: 15px;
+  }
+
+  h2 {
+    color: #00bfff;
+    margin-bottom: 20px;
+  }
+
+  .glowing-btn {
+    display: inline-block;
+    background: linear-gradient(to right, #4fa7ff, #6c63ff);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 30px;
+    font-weight: bold;
+    margin-top: 20px;
+    text-decoration: none;
+    transition: 0.3s ease;
+  }
+
+  .glowing-btn:hover {
+    background: linear-gradient(to right, #6c63ff, #4fa7ff);
+    box-shadow: 0 0 15px #6c63ff;
+    transform: scale(1.05);
+  }
+
+  .cita-item {
+    background-color: #1a1d33;
+    border: 1px solid #00bfff;
+    border-radius: 10px;
+    padding: 15px;
+    margin-top: 15px;
+    text-align: left;
+  }
+
+  .cita-item strong {
+    color: #00bfff;
+  }
+
+  .no-citas {
+    color: #aaa;
+    margin-top: 20px;
+  }
+</style>
+
 <div class="contenido">
-  <div style="text-align: center; padding: 50px; color: white;">
+
+  <!-- Sección de bienvenida -->
+  <div class="seccion">
     <h1>Bienvenido, Doctor</h1>
     <p>Estas son tus citas aceptadas:</p>
+    <a href="{% url 'logout' %}" class="glowing-btn">Cerrar Sesión</a>
+  </div>
 
+  <!-- Sección de citas -->
+  <div class="seccion">
+    <h2>Cita Reciente</h2>
     {% if citas_aceptadas %}
-      <ul style="list-style: none; padding: 0;">
-        {% for cita in citas_aceptadas %}
-          <li style="margin-bottom: 20px; background-color: #333; padding: 15px; border-radius: 8px;">
+      {% for cita in citas_aceptadas %}
+        {% if forloop.first %}
+          <div class="cita-item">
             <strong>Estudiante:</strong> {{ cita.estudiante.nombres }} {{ cita.estudiante.apellido_paterno }}<br>
             <strong>Fecha:</strong> {{ cita.fecha|date:"d/m/Y H:i" }}<br>
             <strong>Motivo:</strong> {{ cita.motivo }}
-          </li>
-        {% endfor %}
-      </ul>
+          </div>
+        {% endif %}
+      {% endfor %}
     {% else %}
-      <p>No tienes citas aceptadas actualmente.</p>
+      <p class="no-citas">No tienes citas aceptadas actualmente.</p>
     {% endif %}
-
-    <a href="{% url 'logout' %}" class="glowing-btn" style="display:inline-block; margin-top:20px;">Cerrar Sesión</a>
   </div>
+
 </div>
 {% endblock %}
