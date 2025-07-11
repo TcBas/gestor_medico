@@ -30,7 +30,6 @@
   }
   .card:hover {
     box-shadow: 0 16px 40px 0 rgba(79, 167, 255, 0.25);
-    transform: translateY(-4px) scale(1.02);
   }
   @keyframes fadeInUp {
     from { opacity: 0; transform: translateY(40px); }
@@ -115,6 +114,38 @@
     padding: 6px 8px;
     text-align: left;
   }
+  .panel-historial-estudiante {
+    background: rgba(17, 34, 64, 0.85) !important;
+    border: 2px solid #4fa7ff !important;
+    border-radius: 12px !important;
+    box-shadow: 0 0 20px rgba(79, 167, 255, 0.2) !important;
+    padding: 40px 24px 24px 24px !important;
+    margin-top: 10px;
+    color: #fff;
+    max-height: 320px;
+    overflow-y: auto;
+    z-index: 3;
+    pointer-events: auto;
+    will-change: transform;
+    position: relative;
+  }
+  .panel-historial-estudiante .card-header {
+    margin-bottom: 18px;
+  }
+  .panel-historial-estudiante ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .panel-historial-estudiante li {
+    border-bottom: 1px solid #4fa7ff33;
+    padding: 10px 0 10px 0;
+    margin-bottom: 8px;
+    position: relative;
+  }
+  .panel-historial-estudiante li:last-child {
+    border-bottom: none;
+  }
   .historial-citas {
     background: rgba(26, 29, 51, 0.7);
     border: 1px solid #4fa7ff;
@@ -125,6 +156,9 @@
     max-height: 320px;
     overflow-y: auto;
     box-shadow: 0 0 10px #4fa7ff22;
+    will-change: transform;
+  position: relative;
+  z-index: 0;
   }
   .historial-citas ul {
     list-style: none;
@@ -143,13 +177,13 @@
   .btn-imprimir {
     background: #4fa7ff;
     color: #fff;
-    border: none;
+    border: 2px solid transparent;;
     border-radius: 8px;
     padding: 6px 18px;
     font-weight: 600;
     margin-left: 10px;
     cursor: pointer;
-    transition: background 0.3s, color 0.3s;
+    transition: background 0.3s, color 0.3s, border-color 0.3s;;
     font-size: 1rem;
     box-shadow: 0 0 10px #4fa7ff44;
   }
@@ -157,6 +191,7 @@
     background: #fff;
     color: #4fa7ff;
     border: 2px solid #4fa7ff;
+    border-color: #4fa7ff; /* Solo cambia el color, sin afectar el tamaño */
   }
   .form-cita label {
     color: #fff;
@@ -312,7 +347,7 @@
         <tr><th>Observaciones:</th><td>{{ analisis.observaciones|default:'Sin observaciones' }}</td></tr>
       </table>
     </div>
-    <div class="card historial-citas">
+    <div class="panel-historial-estudiante">
       <div class="card-header"><i class="fas fa-calendar-check"></i><h3>Historial de Citas</h3></div>
       {% if citas %}
       <ul>
@@ -407,6 +442,7 @@
     </form>
   </div>
 </div>
+
 <script>
   // Modal edición
   function abrirModal() {
@@ -444,5 +480,24 @@
     ventana.document.close();
     ventana.print();
   }
+  // Selector del contenedor donde está el efecto (ajusta si no es este)
+const contenedor = document.querySelector('.dashboard-grid');
+const historialCitas = document.querySelector('.historial-citas');
+
+// Supongamos que la clase que activa el efecto es 'efecto-desaparecer' 
+// Cambia 'efecto-desaparecer' por el nombre real de la clase que usas
+// O si el efecto es con otra cosa, dime para ayudarte mejor.
+
+historialCitas.addEventListener('mouseenter', () => {
+  // Cuando el mouse entra en historial, quita el efecto
+  contenedor.classList.remove('efecto-desaparecer');
+});
+
+historialCitas.addEventListener('mouseleave', () => {
+  // Cuando sale, vuelve a poner el efecto
+  contenedor.classList.add('efecto-desaparecer');
+});
+
 </script>
+
 {% endblock %}
