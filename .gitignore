@@ -1,0 +1,82 @@
+# Entornos virtuales
+venv/
+.env/
+.venv/
+env/
+
+# Archivos de Python
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+*.py,cover
+*.so
+.Python
+
+# Entornos de desarrollo
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Base de datos
+*.sqlite3
+*.db
+
+# Archivos de configuración local
+.env
+.env.local
+.env.dev
+.env.prod
+.env.staging
+secrets.json
+
+# Archivos estáticos y media
+/staticfiles/
+/media/
+
+# Logs
+*.log
+logs/
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db
+
+# Archivos de cobertura
+.coverage
+htmlcov/
+
+# Archivos de documentación
+docs/_build/
+
+# Archivos de Jupyter Notebook
+.ipynb_checkpoints/
+
+# Archivos de PyCharm
+.idea/
+*.iml
+
+# Archivos de VS Code
+.vscode/
+
+# Archivos de distribución y paquetes
+dist/
+build/
+*.egg-info/
+*.egg
+*.manifest
+*.spec
+
+# Archivos de caché de pip
+.pip/
+
+# Archivos de pytest
+.pytest_cache/
+
+# Archivos de celery
+celerybeat-schedule.*
+celerybeat.pid
+
+# Archivos de node (si usas webpack, etc.)
+node_modules/
