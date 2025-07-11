@@ -29,6 +29,55 @@
     font-size: 1.2rem;
     font-weight: 700;
   }
+  .panel-pacientes {
+    background: rgba(17, 34, 64, 0.85) !important;
+    border: 2px solid #4fa7ff !important;
+    border-radius: 12px !important;
+    box-shadow: 0 0 20px rgba(79, 167, 255, 0.2) !important;
+    padding: 40px 24px 24px 24px !important;
+    min-width: 260px;
+    z-index: 3;
+    pointer-events: auto;
+  }
+  .panel-pacientes h2 {
+    color: #4fa7ff;
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 1.3rem;
+    font-weight: 700;
+  }
+  .panel-pacientes .pacientes-lista {
+    background: transparent;
+    border-radius: 8px;
+    padding: 0;
+    box-shadow: none;
+    max-height: 400px;
+    overflow-y: auto;
+  }
+  .panel-pacientes .paciente-item {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid #4fa7ff44;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    padding: 12px 10px;
+    color: #fff;
+    font-weight: 500;
+    font-size: 1.05rem;
+    transition: background 0.2s, color 0.2s, border 0.2s;
+    cursor: pointer;
+    display: block;
+    text-align: left;
+    text-decoration: none;
+    box-shadow: 0 2px 8px rgba(79, 167, 255, 0.08);
+  }
+  .panel-pacientes .paciente-item.selected, .panel-pacientes .paciente-item:hover {
+    background: #4fa7ff;
+    color: #112240;
+    border: 2px solid #4fa7ff;
+  }
+  .panel-pacientes .paciente-item:last-child {
+    margin-bottom: 0;
+  }
   .pacientes-lista {
     max-height: 400px;
     overflow-y: auto;
@@ -124,7 +173,7 @@
 </style>
 <div class="doctor-dashboard">
   <!-- Panel de pacientes -->
-  <div class="panel" style="max-width:320px;">
+  <div class="panel panel-pacientes" style="max-width:340px;">
     <h2><i class="fas fa-users"></i> Pacientes</h2>
     <div class="pacientes-lista">
       {% for paciente in pacientes %}
@@ -166,9 +215,9 @@
         {% csrf_token %}
         <h3><i class="fas fa-notes-medical"></i> Registrar/Editar Datos Médicos</h3>
         <label for="peso">Peso (kg):</label>
-        <input type="number" step="0.1" name="peso" id="peso" value="{{ analisis.peso|default:'' }}">
+        <input type="number" step="0.1" name="peso" id="peso" value="{{ analisis.peso|default_if_none:''|floatformat:'-2' }}">
         <label for="altura">Altura (cm):</label>
-        <input type="number" step="0.1" name="altura" id="altura" value="{{ analisis.altura|default:'' }}">
+        <input type="number" step="0.1" name="altura" id="altura" value="{{ analisis.altura|default_if_none:''|floatformat:'-2' }}">
         <label for="tipo_sangre">Tipo de Sangre:</label>
         <input type="text" name="tipo_sangre" id="tipo_sangre" value="{{ analisis.tipo_sangre|default:'' }}">
         <label for="alergias">Alergias:</label>

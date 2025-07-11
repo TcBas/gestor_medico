@@ -116,16 +116,77 @@ def vista_estudiante(request):
     })
 
 def vista_doctor(request):
+    from .models import AnalisisMedico
     perfil = Perfil.objects.get(user=request.user)
 
-    # Filtrar solo citas aceptadas del doctor actual
+    # Obtener todos los pacientes que tienen citas aceptadas con este doctor
     citas_aceptadas = Cita.objects.filter(
         doctor=perfil,
         estado='Aceptada'
     ).order_by('fecha')
+    pacientes_ids = list(citas_aceptadas.values_list('estudiante', flat=True).distinct())
+    pacientes = Perfil.objects.filter(id__in=pacientes_ids)
+
+    # Selección de paciente
+    paciente_id = request.GET.get('paciente')
+    paciente_seleccionado = None
+    citas_paciente = []
+    analisis = None
+    if paciente_id:
+        try:
+            paciente_id_int = int(paciente_id)
+            paciente_seleccionado = pacientes.get(id=paciente_id_int)
+            citas_paciente = Cita.objects.filter(doctor=perfil, estudiante=paciente_seleccionado).order_by('-fecha')
+
+            # Guardar datos médicos si es POST
+            if request.method == 'POST':
+                peso = request.POST.get('peso')
+                altura = request.POST.get('altura')
+                tipo_sangre = request.POST.get('tipo_sangre')
+                alergias = request.POST.get('alergias')
+                observaciones = request.POST.get('observaciones')
+                diagnostico = request.POST.get('diagnostico')
+                analisis_obj, _ = AnalisisMedico.objects.get_or_create(paciente=paciente_seleccionado)
+                analisis_obj.peso = peso or None
+                analisis_obj.altura = altura or None
+                analisis_obj.tipo_sangre = tipo_sangre or None
+                analisis_obj.alergias = alergias or None
+                analisis_obj.observaciones = observaciones or None
+                analisis_obj.diagnostico = diagnostico or None
+                analisis_obj.save()
+                # Redirigir para mostrar los datos actualizados (POST/Redirect/GET)
+                return redirect(f"{request.path}?paciente={paciente_seleccionado.id}")
+
+            # Leer datos médicos reales
+            try:
+                analisis_obj = AnalisisMedico.objects.get(paciente=paciente_seleccionado)
+                analisis = {
+                    'peso': analisis_obj.peso,
+                    'altura': analisis_obj.altura,
+                    'tipo_sangre': analisis_obj.tipo_sangre,
+                    'alergias': analisis_obj.alergias,
+                    'observaciones': analisis_obj.observaciones,
+                    'diagnostico': analisis_obj.diagnostico,
+                }
+            except AnalisisMedico.DoesNotExist:
+                analisis = {
+                    'peso': '',
+                    'altura': '',
+                    'tipo_sangre': '',
+                    'alergias': '',
+                    'observaciones': '',
+                    'diagnostico': '',
+                }
+        except (Perfil.DoesNotExist, ValueError):
+            paciente_seleccionado = None
+            citas_paciente = []
+            analisis = None
 
     return render(request, 'vista_doctor.html', {
-        'citas_aceptadas': citas_aceptadas,
+        'pacientes': pacientes,
+        'paciente_seleccionado': paciente_seleccionado,
+        'citas_paciente': citas_paciente,
+        'analisis': analisis,
     })
 
 def perfil_estudiante(request):
