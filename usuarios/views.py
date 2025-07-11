@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
-from .forms import RegistroEstudianteForm
+from .forms import RegistroEstudianteForm, GestionCitaForm
 from django.contrib import messages
-from usuarios import views  # ✅ Cambia 'usuarios' por el nombre real de tu app.
+
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
 from .models import Perfil, Cita
@@ -90,11 +90,29 @@ def vista_estudiante(request):
 
     citas = Cita.objects.filter(estudiante=estudiante).order_by('-fecha')
 
+    # Simulación de análisis médico
+    analisis = {
+        'tipo_sangre': 'O+',
+        'alergias': 'Ninguna',
+        'peso': '70',
+        'altura': '175',
+        'observaciones': 'Sin observaciones'
+    }
+
+    # Simulación de diagnóstico en cada cita (si no existe el campo)
+    for cita in citas:
+        if not hasattr(cita, 'diagnostico'):
+            cita.diagnostico = 'Diagnóstico no registrado'
+
+    from .models import CARRERAS
     return render(request, 'vista_estudiante.html', {
         'doctores': doctores,
         'citas': citas,
         'citas_esta_semana': citas_esta_semana.first(),
         'proxima_fecha': proxima_fecha,
+        'analisis': analisis,
+        'perfil': estudiante,
+        'carreras': CARRERAS,
     })
 
 def vista_doctor(request):
@@ -109,6 +127,28 @@ def vista_doctor(request):
     return render(request, 'vista_doctor.html', {
         'citas_aceptadas': citas_aceptadas,
     })
+
+def perfil_estudiante(request):
+    perfil = Perfil.objects.get(user=request.user)
+    return render(request, 'perfil_estudiante.html', {'perfil': perfil})
+
+from .forms import EditarPerfilEstudianteForm
+
+def editar_perfil_estudiante(request):
+    perfil = Perfil.objects.get(user=request.user)
+    if request.method == 'POST':
+        form = EditarPerfilEstudianteForm(request.POST, instance=perfil)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Datos actualizados correctamente.')
+            return redirect('vista_estudiante')
+    else:
+        form = EditarPerfilEstudianteForm(instance=perfil)
+    return render(request, 'editar_perfil_estudiante.html', {'perfil': perfil, 'form': form})
+
+def perfil_doctor(request):
+    perfil = Perfil.objects.get(user=request.user)
+    return render(request, 'perfil_doctor.html', {'perfil': perfil})
 
 def logout_view(request):
     logout(request)

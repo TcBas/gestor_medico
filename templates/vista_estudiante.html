@@ -1,209 +1,350 @@
 {% extends 'base.html' %}
-
 {% block content %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
-  .contenido {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 90px 20px 40px;
-    min-height: 100vh;
-    position: relative;
-    z-index: 3;
+  body {
+    background: linear-gradient(120deg, #4fa7ff 0%, #112240 100%);
   }
-  
-  .seccion-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 40px;
+  .dashboard-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr 1fr;
+    gap: 24px;
+    padding: 90px 8px 32px 8px;
+    min-height: 90vh;
     width: 100%;
     max-width: 1200px;
-    margin-top: 20px;
+    margin: 0 auto;
+    box-sizing: border-box;
   }
-  
-  .seccion {
-    flex: 1;
-    background-color: rgba(44, 47, 72, 0.8);
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
-    color: white;
-    min-width: 300px;
-    max-width: 500px;
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(79, 167, 255, 0.3);
-    animation: float 6s ease-in-out infinite;
+  .card {
+    background: rgba(255,255,255,0.13);
+    border-radius: 22px;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18);
+    backdrop-filter: blur(12px);
+    border: 1.5px solid rgba(79, 167, 255, 0.18);
+    padding: 32px 24px 24px 24px;
+    position: relative;
+    margin-bottom: 24px;
+    transition: box-shadow 0.3s, transform 0.3s;
+    animation: fadeInUp 0.8s;
   }
-  
-  @keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
+  .card:hover {
+    box-shadow: 0 16px 40px 0 rgba(79, 167, 255, 0.25);
+    transform: translateY(-4px) scale(1.02);
   }
-  
-  .titulo-destacado {
-    font-size: 2.2rem;
-    background: linear-gradient(90deg, #4fa7ff, #a1c8ff);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    margin-bottom: 1rem;
-    text-shadow: 0 0 20px rgba(79, 167, 255, 0.3);
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
   }
-  
-  .mensaje-cita {
-    background-color: rgba(255, 79, 79, 0.2);
-    padding: 15px;
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 18px;
+  }
+  .card-header i {
+    font-size: 1.7rem;
+    color: #4fa7ff;
+    background: #fff;
+    border-radius: 50%;
+    padding: 8px;
+    box-shadow: 0 0 10px #4fa7ff44;
+  }
+  .card-header h2, .card-header h3 {
+    margin: 0;
+    color: #4fa7ff;
+    font-size: 1.3rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+  .badge {
+    display: inline-block;
+    background: #4fa7ff;
+    color: #fff;
     border-radius: 8px;
-    border: 1px solid rgba(255, 79, 79, 0.5);
+    padding: 2px 10px;
+    font-size: 0.9rem;
+    margin-left: 8px;
+    font-weight: 600;
+  }
+  .perfil-box {
     text-align: center;
-    margin-bottom: 20px;
-    backdrop-filter: blur(5px);
   }
-  
-  .mensaje-cita h2 {
+  .perfil-box img {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+    box-shadow: 0 0 16px #4fa7ff;
+    border: 3px solid #fff;
+    background: #fff;
+  }
+  .perfil-box .btn-editar {
+    margin-top: 18px;
+    background: #4fa7ff;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 0;
+    font-weight: 700;
+    width: 100%;
+    font-size: 1.1rem;
+    box-shadow: 0 0 10px #4fa7ff44;
+    cursor: pointer;
+    transition: background 0.3s, color 0.3s;
+  }
+  .perfil-box .btn-editar:hover {
+    background: #fff;
+    color: #4fa7ff;
+    border: 2px solid #4fa7ff;
+  }
+  .perfil-dato {
+    text-align: left;
+    margin: 8px 0;
+    font-size: 1.08rem;
+    color: #fff;
+    border-bottom: 1px solid #4fa7ff22;
+    padding-bottom: 4px;
+  }
+  .analisis-box table {
+    width: 100%;
+    color: #fff;
+    font-size: 1.1rem;
+  }
+  .analisis-box th, .analisis-box td {
+    padding: 6px 8px;
+    text-align: left;
+  }
+  .historial-citas {
+    background: rgba(26, 29, 51, 0.7);
+    border: 1px solid #4fa7ff;
+    border-radius: 16px;
+    padding: 18px 10px;
+    margin-top: 10px;
+    color: #fff;
+    max-height: 320px;
+    overflow-y: auto;
+    box-shadow: 0 0 10px #4fa7ff22;
+  }
+  .historial-citas ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .historial-citas li {
+    border-bottom: 1px solid #4fa7ff33;
+    padding: 10px 0 10px 0;
+    margin-bottom: 8px;
+    position: relative;
+  }
+  .historial-citas li:last-child {
+    border-bottom: none;
+  }
+  .btn-imprimir {
+    background: #4fa7ff;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 6px 18px;
+    font-weight: 600;
+    margin-left: 10px;
+    cursor: pointer;
+    transition: background 0.3s, color 0.3s;
+    font-size: 1rem;
+    box-shadow: 0 0 10px #4fa7ff44;
+  }
+  .btn-imprimir:hover {
+    background: #fff;
+    color: #4fa7ff;
+    border: 2px solid #4fa7ff;
+  }
+  .form-cita label {
+    color: #fff;
+    font-weight: 500;
+    margin-top: 10px;
+    display: block;
+    text-align: left;
+  }
+  .form-cita input, .form-cita select, .form-cita textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1.5px solid #4fa7ff44;
+    background: rgba(255,255,255,0.13);
+    color: #fff;
+    margin-bottom: 10px;
+    font-size: 1.05rem;
+  }
+  .cita-pendiente {
+    background: rgba(255, 79, 79, 0.13);
+    border: 1.5px solid #ffb3b3;
+    border-radius: 12px;
+    padding: 15px 10px;
+    margin-top: 20px;
     color: #ffb3b3;
-    margin: 5px 0;
-    font-size: 1.8rem;
+    text-align: center;
+    font-weight: 600;
+    font-size: 1.08rem;
   }
-  
-  .mensaje-cita p {
-    color: #ffb3b3;
-    margin: 5px 0;
+  @media (max-width: 1100px) {
+    .dashboard-grid {
+      grid-template-columns: 1fr;
+      gap: 20px;
+      padding: 80px 5px 30px;
+    }
   }
-  
-  .mensaje-cita strong {
-    color: white;
-    font-weight: bold;
+  /* Modal */
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    left: 0; top: 0; width: 100vw; height: 100vh;
+    background: rgba(17,34,64,0.7);
+    justify-content: center;
+    align-items: center;
+    overflow-y: auto;
+    padding: 24px 0;
+  }
+  .modal-content {
+    background: #fff;
+    border-radius: 16px;
+    padding: 12px 10px 8px 10px;
+    min-width: 0;
+    width: 320px;
+    max-width: 95vw;
+    box-shadow: 0 0 30px #4fa7ff55;
+    position: relative;
+    animation: fadeInUp 0.5s;
+    margin: 0 auto;
+  }
+  .modal-content h2 {
+    color: #4fa7ff;
+    margin-bottom: 18px;
     font-size: 1.2rem;
   }
-  
-  .login-form {
-    background-color: rgba(44, 47, 72, 0.8);
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(79, 167, 255, 0.3);
-    animation: float 6s ease-in-out infinite;
-    width: 100%;
-  }
-  
-  label {
-    display: block;
-    margin-top: 15px;
-    font-weight: bold;
-    text-align: left;
-    color: rgba(255, 255, 255, 0.9);
-  }
-  
-  input[type="datetime-local"],
-  select,
-  textarea {
-    width: 100%;
-    padding: 12px;
+  .close-modal {
+    position: absolute;
+    top: 10px; right: 14px;
+    font-size: 2rem;
+    color: #4fa7ff;
+    background: none;
     border: none;
-    margin-top: 5px;
-    border-radius: 6px;
-    background-color: rgba(255, 255, 255, 0.1);
-    color: white;
-    border: 1px solid rgba(79, 167, 255, 0.3);
-  }
-  
-  textarea {
-    resize: vertical;
-    min-height: 100px;
-  }
-  
-  .glowing-btn {
-    display: inline-block;
-    background: transparent;
-    color: #4fa7ff;
-    padding: 12px 30px;
-    border-radius: 8px;
-    font-weight: bold;
-    text-decoration: none;
-    transition: 0.3s ease;
-    border: 2px solid #4fa7ff;
     cursor: pointer;
-    font-size: 16px;
-    box-shadow: 0 0 10px rgba(79, 167, 255, 0.3);
-    text-align: center;
-    width: 100%;
-    margin-top: 20px;
+    font-weight: bold;
+    z-index: 10;
   }
-  
-  .glowing-btn:hover {
-    background: #4fa7ff;
+  @media (max-width: 600px) {
+    .modal-content {
+      width: 98vw;
+      min-width: 0;
+      max-width: 99vw;
+      padding: 18px 4vw 12px 4vw;
+    }
+    .close-modal {
+      top: 6px;
+      right: 8px;
+      font-size: 2.2rem;
+    }
+  }
+  .modal-content form label {
     color: #112240;
-    box-shadow: 0 0 20px rgba(79, 167, 255, 0.8);
-  }
-  
-  .cita-item {
-    background-color: rgba(26, 29, 51, 0.7);
-    border: 1px solid #4fa7ff;
-    border-radius: 10px;
-    padding: 15px;
-    margin-top: 15px;
+    font-weight: 600;
+    margin-top: 10px;
+    display: block;
     text-align: left;
-    backdrop-filter: blur(5px);
-    transition: transform 0.3s;
   }
-  
-  .cita-item:hover {
-    transform: translateY(-5px);
+  .modal-content form input, .modal-content form select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1.5px solid #4fa7ff44;
+    background: rgba(79,167,255,0.07);
+    color: #112240;
+    margin-bottom: 10px;
+    font-size: 1.05rem;
   }
-  
-  .cita-item strong {
+  .modal-content form button {
+    background: #4fa7ff;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 0;
+    font-weight: 700;
+    width: 100%;
+    font-size: 1.1rem;
+    margin-top: 10px;
+    box-shadow: 0 0 10px #4fa7ff44;
+    cursor: pointer;
+    transition: background 0.3s, color 0.3s;
+  }
+  .modal-content form button:hover {
+    background: #fff;
     color: #4fa7ff;
-  }
-  
-  .no-citas {
-    color: #aaa;
-    text-align: center;
-    padding: 20px;
-  }
-  
-  .historial-header {
-    font-size: 2.2rem;
-    background: linear-gradient(90deg, #4fa7ff, #a1c8ff);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    margin-bottom: 1rem;
-    text-shadow: 0 0 20px rgba(79, 167, 255, 0.3);
-    text-align: center;
-  }
-  
-  @media (max-width: 768px) {
-    .seccion-container {
-      flex-direction: column;
-      align-items: center;
-    }
-    
-    .seccion {
-      width: 100%;
-      max-width: 100%;
-    }
+    border: 2px solid #4fa7ff;
   }
 </style>
-
-<div class="contenido">
-  <div class="seccion-container">
-    <!-- Sección de formulario/historial -->
-    <div class="seccion">
+<div class="dashboard-grid">
+  <!-- IZQUIERDA: Datos personales y editar -->
+  <div>
+    <div class="card perfil-box">
+      <div class="card-header"><i class="fas fa-user-graduate"></i><h2>Datos Personales</h2></div>
+      <img src="https://cdn-icons-png.flaticon.com/512/3135/3135768.png" alt="Perfil">
+      <div class="perfil-dato"><strong>Usuario:</strong> {{ user.username }}</div>
+      <div class="perfil-dato"><strong>Nombre:</strong> {{ perfil.nombres }} {{ perfil.apellido_paterno }} {{ perfil.apellido_materno }}</div>
+      <div class="perfil-dato"><strong>DNI:</strong> {{ perfil.dni }}</div>
+      <div class="perfil-dato"><strong>Teléfono:</strong> {{ perfil.telefono }}</div>
+      <div class="perfil-dato"><strong>Dirección:</strong> {{ perfil.direccion }}</div>
+      <div class="perfil-dato"><strong>Fecha de Nacimiento:</strong> {{ perfil.fecha_nacimiento }}</div>
+      <div class="perfil-dato"><strong>Código Matrícula:</strong> {{ perfil.codigo_matricula }}</div>
+      <div class="perfil-dato"><strong>Carrera:</strong> {{ perfil.get_carrera_display }}</div>
+      <button class="btn-editar" onclick="abrirModal()"><i class="fas fa-pen"></i> Editar Datos</button>
+    </div>
+  </div>
+  <!-- CENTRO: Análisis y historial -->
+  <div>
+    <div class="card analisis-box">
+      <div class="card-header"><i class="fas fa-vials"></i><h2>Análisis Médico</h2></div>
+      <table>
+        <tr><th>Tipo de Sangre:</th><td>{{ analisis.tipo_sangre|default:'O+' }}</td></tr>
+        <tr><th>Alergias:</th><td>{{ analisis.alergias|default:'Ninguna' }}</td></tr>
+        <tr><th>Peso:</th><td>{{ analisis.peso|default:'-' }} kg</td></tr>
+        <tr><th>Altura:</th><td>{{ analisis.altura|default:'-' }} cm</td></tr>
+        <tr><th>Observaciones:</th><td>{{ analisis.observaciones|default:'Sin observaciones' }}</td></tr>
+      </table>
+    </div>
+    <div class="card historial-citas">
+      <div class="card-header"><i class="fas fa-calendar-check"></i><h3>Historial de Citas</h3></div>
+      {% if citas %}
+      <ul>
+        {% for cita in citas %}
+        <li>
+          <strong>Fecha:</strong> {{ cita.fecha|date:"d/m/Y H:i" }}<br>
+          <strong>Doctor:</strong> {{ cita.doctor.nombres }} {{ cita.doctor.apellido_paterno }}<br>
+          <strong>Motivo:</strong> {{ cita.motivo }}<br>
+          <strong>Estado:</strong> <span class="badge">{{ cita.estado }}</span><br>
+          <strong>Diagnóstico:</strong> <span id="diagnostico-{{ cita.id }}">{{ cita.diagnostico|default:'-' }}</span>
+          <button class="btn-imprimir" onclick="imprimirDiagnostico('diagnostico-{{ cita.id }}')"><i class="fas fa-print"></i> Imprimir</button>
+        </li>
+        {% endfor %}
+      </ul>
+      {% else %}
+        <p style="color: #aaa; text-align: center;">No tienes citas registradas.</p>
+      {% endif %}
+    </div>
+  </div>
+  <!-- DERECHA: Solicitar cita y cita pendiente -->
+  <div>
+    <div class="card">
+      <div class="card-header"><i class="fas fa-calendar-plus"></i><h2>Solicitar Cita</h2></div>
       {% if citas_esta_semana %}
-        <div class="mensaje-cita">
-          <h2>Ya tienes una cita esta semana.</h2>
-          <p>Podrás agendar otra cita desde:</p>
-          <p><strong>{{ proxima_fecha|date:"d/m/Y H:i" }}</strong></p>
-          <a href="{% url 'logout' %}" class="glowing-btn">Cerrar Sesión</a>
+        <div class="cita-pendiente">
+          <strong>Ya tienes una cita pendiente esta semana.</strong><br>
+          <span>Podrás agendar otra cita desde:</span><br>
+          <span style="color: #fff;">{{ proxima_fecha|date:"d/m/Y H:i" }}</span>
         </div>
       {% else %}
-        <form class="login-form" method="POST">
+        <form class="form-cita" method="POST">
           {% csrf_token %}
-          <h2 class="titulo-destacado">Solicitar Cita Médica</h2>
-          
           <label for="doctor">Seleccionar Doctor:</label>
           <select name="doctor" id="doctor" required>
             <option value="">-- Selecciona un Doctor --</option>
@@ -211,52 +352,97 @@
               <option value="{{ doctor.id }}">{{ doctor.nombres }} {{ doctor.apellido_paterno }}</option>
             {% endfor %}
           </select>
-
           <label for="fecha">Fecha y Hora de la Cita:</label>
           <input type="datetime-local" name="fecha" id="fecha" required>
-
           <label for="motivo">Motivo de la Cita:</label>
           <textarea name="motivo" id="motivo" required placeholder="Escribe el motivo de la cita..."></textarea>
-
-          <button type="submit" class="glowing-btn">Agendar Cita</button>
-          <a href="{% url 'logout' %}" class="glowing-btn">Cerrar Sesión</a>
+          <button type="submit" class="glowing-btn"><i class="fas fa-plus"></i> Agendar Cita</button>
         </form>
       {% endif %}
     </div>
-
-    <!-- Sección de historial -->
-    <div class="seccion">
-      <h2 class="historial-header">Historial de Citas</h2>
-      {% if citas %}
-        <ul style="list-style: none; padding: 0;">
-          {% for cita in citas %}
-            <li class="cita-item">
-              <strong>Doctor:</strong> {{ cita.doctor.nombres }} {{ cita.doctor.apellido_paterno }}<br>
-              <strong>Fecha:</strong> {{ cita.fecha|date:"d/m/Y H:i" }}<br>
-              <strong>Motivo:</strong> {{ cita.motivo }}<br>
-              <strong>Estado:</strong> {{ cita.estado }}
-            </li>
-          {% endfor %}
-        </ul>
-      {% else %}
-        <p class="no-citas">No tienes citas registradas.</p>
-      {% endif %}
+    {% if citas_esta_semana %}
+    <div class="card">
+      <div class="card-header"><i class="fas fa-bell"></i><h3>Cita Pendiente</h3></div>
+      <div style="color: #fff;">
+        <strong>Doctor:</strong> {{ citas_esta_semana.doctor.nombres }} {{ citas_esta_semana.doctor.apellido_paterno }}<br>
+        <strong>Fecha:</strong> {{ citas_esta_semana.fecha|date:"d/m/Y H:i" }}<br>
+        <strong>Motivo:</strong> {{ citas_esta_semana.motivo }}<br>
+        <strong>Estado:</strong> <span class="badge">{{ citas_esta_semana.estado }}</span>
+      </div>
     </div>
+    {% endif %}
   </div>
 </div>
-
+<!-- MODAL EDICIÓN PERFIL -->
+<div id="modalEditar" class="modal">
+  <div class="modal-content">
+    <button class="close-modal" onclick="cerrarModal()">&times;</button>
+    <h2>Editar Datos Personales</h2>
+    <form id="formEditarPerfil" method="POST" action="{% url 'editar_perfil_estudiante' %}">
+      {% csrf_token %}
+      <label for="nombres">Nombres:</label>
+      <input type="text" name="nombres" id="nombres" value="{{ perfil.nombres }}" required>
+      <label for="apellido_paterno">Apellido Paterno:</label>
+      <input type="text" name="apellido_paterno" id="apellido_paterno" value="{{ perfil.apellido_paterno }}" required>
+      <label for="apellido_materno">Apellido Materno:</label>
+      <input type="text" name="apellido_materno" id="apellido_materno" value="{{ perfil.apellido_materno }}">
+      <label for="dni">DNI:</label>
+      <input type="text" name="dni" id="dni" value="{{ perfil.dni }}" required>
+      <label for="telefono">Teléfono:</label>
+      <input type="text" name="telefono" id="telefono" value="{{ perfil.telefono }}" required>
+      <label for="direccion">Dirección:</label>
+      <input type="text" name="direccion" id="direccion" value="{{ perfil.direccion }}" required>
+      <label for="fecha_nacimiento">Fecha de Nacimiento:</label>
+      <input type="date" name="fecha_nacimiento" id="fecha_nacimiento" value="{{ perfil.fecha_nacimiento }}" required>
+      <label for="codigo_matricula">Código Matrícula:</label>
+      <input type="text" name="codigo_matricula" id="codigo_matricula" value="{{ perfil.codigo_matricula }}">
+      <label for="carrera">Carrera:</label>
+      <select name="carrera" id="carrera" required>
+        <option value="">-- Selecciona Carrera --</option>
+        {% for key, value in carreras %}
+          <option value="{{ key }}" {% if perfil.carrera == key %}selected{% endif %}>{{ value }}</option>
+        {% endfor %}
+      </select>
+      <button type="submit"><i class="fas fa-save"></i> Guardar Cambios</button>
+    </form>
+  </div>
+</div>
 <script>
-  // Establecer fecha mínima (hoy) y máxima (2 meses) para el campo de fecha
+  // Modal edición
+  function abrirModal() {
+    document.getElementById('modalEditar').style.display = 'flex';
+  }
+  function cerrarModal() {
+    document.getElementById('modalEditar').style.display = 'none';
+  }
+  // El modal solo se cierra con la X
+  // window.onclick = function(event) {
+  //   var modal = document.getElementById('modalEditar');
+  //   if (event.target == modal) {
+  //     cerrarModal();
+  //   }
+  // }
+  // Limitar fechas para el campo de cita
   window.addEventListener('DOMContentLoaded', () => {
     const hoy = new Date();
     const maxDate = new Date();
     maxDate.setMonth(maxDate.getMonth() + 2);
-    
     const fechaInput = document.getElementById('fecha');
     if(fechaInput) {
       fechaInput.min = hoy.toISOString().slice(0, 16);
       fechaInput.max = maxDate.toISOString().slice(0, 16);
     }
   });
+  // Imprimir solo el diagnóstico seleccionado
+  function imprimirDiagnostico(id) {
+    var contenido = document.getElementById(id).innerText;
+    var ventana = window.open('', '', 'height=400,width=600');
+    ventana.document.write('<html><head><title>Diagnóstico</title></head><body>');
+    ventana.document.write('<h2>Diagnóstico Médico</h2>');
+    ventana.document.write('<p>' + contenido + '</p>');
+    ventana.document.write('</body></html>');
+    ventana.document.close();
+    ventana.print();
+  }
 </script>
 {% endblock %}

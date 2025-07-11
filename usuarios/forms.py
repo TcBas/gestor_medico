@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from .models import Perfil
+from .models import Perfil, Cita, ESTADOS
 
 class RegistroEstudianteForm(forms.ModelForm):
     username = forms.CharField(max_length=150)
@@ -36,3 +36,22 @@ class RegistroEstudianteForm(forms.ModelForm):
         if commit:
             perfil.save()
         return perfil
+
+# Formulario para que el doctor gestione la cita
+class GestionCitaForm(forms.ModelForm):
+    class Meta:
+        model = Cita
+        fields = ['estado']
+        widgets = {
+            'estado': forms.Select(choices=[s for s in ESTADOS if s[0] != 'Pendiente'])
+        }
+
+# Formulario de edición de perfil de estudiante
+class EditarPerfilEstudianteForm(forms.ModelForm):
+    fecha_nacimiento = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
+    class Meta:
+        model = Perfil
+        fields = [
+            'nombres', 'apellido_paterno', 'apellido_materno', 'dni', 'telefono',
+            'direccion', 'fecha_nacimiento', 'codigo_matricula', 'carrera'
+        ]

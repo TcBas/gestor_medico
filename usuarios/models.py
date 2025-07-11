@@ -2,11 +2,30 @@ from django.db import models
 from django.contrib.auth.models import User
 
 CARRERAS = [
-    ('medicina', 'Medicina'),
+    ('medicina', 'Medicina Humana'),
     ('enfermeria', 'Enfermería'),
     ('odontologia', 'Odontología'),
     ('psicologia', 'Psicología'),
-    ('estadistica', 'Ing.Estadistica e Informatica'),
+    ('estadistica', 'Ingeniería Estadística e Informática'),
+    ('civil', 'Ingeniería Civil'),
+    ('sistemas', 'Ingeniería de Sistemas'),
+    ('electronica', 'Ingeniería Electrónica'),
+    ('agronomia', 'Ingeniería Agronómica'),
+    ('ambiental', 'Ingeniería Ambiental'),
+    ('derecho', 'Derecho'),
+    ('contabilidad', 'Contabilidad'),
+    ('administracion', 'Administración'),
+    ('economia', 'Economía'),
+    ('educacion_inicial', 'Educación Inicial'),
+    ('educacion_primaria', 'Educación Primaria'),
+    ('educacion_secundaria', 'Educación Secundaria'),
+    ('biologia', 'Biología'),
+    ('matematica', 'Matemática'),
+    ('fisica', 'Física'),
+    ('quimica', 'Química'),
+    ('arquitectura', 'Arquitectura'),
+    ('zootecnia', 'Zootecnia'),
+    ('veterinaria', 'Medicina Veterinaria'),
 ]
 
 TIPOS = [

@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="contenido" style="padding-top: 100px; min-height: 80vh; display: flex; flex-direction: column; align-items: center;">
+  <div style="background: rgba(44, 47, 72, 0.95); border-radius: 16px; box-shadow: 0 0 20px #4fa7ff44; padding: 40px 30px; max-width: 500px; width: 100%; text-align: center;">
+    <img src="https://cdn-icons-png.flaticon.com/512/3135/3135768.png" alt="Perfil" style="width: 90px; height: 90px; border-radius: 50%; margin-bottom: 20px; box-shadow: 0 0 10px #4fa7ff;">
+    <h2 style="color: #4fa7ff;">Perfil del Estudiante</h2>
+    <p><strong>Usuario:</strong> {{ perfil.user.username }}</p>
+    <p><strong>Nombre:</strong> {{ perfil.nombres }} {{ perfil.apellido_paterno }} {{ perfil.apellido_materno }}</p>
+    <p><strong>DNI:</strong> {{ perfil.dni }}</p>
+    <p><strong>Teléfono:</strong> {{ perfil.telefono }}</p>
+    <p><strong>Dirección:</strong> {{ perfil.direccion }}</p>
+    <p><strong>Fecha de Nacimiento:</strong> {{ perfil.fecha_nacimiento }}</p>
+    <p><strong>Código Matrícula:</strong> {{ perfil.codigo_matricula }}</p>
+    <p><strong>Carrera:</strong> {{ perfil.get_carrera_display }}</p>
+    <a href="{% url 'vista_estudiante' %}" class="glowing-btn" style="margin-top: 25px;">Volver</a>
+  </div>
+</div>
+{% endblock %}

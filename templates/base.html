@@ -546,12 +546,17 @@ gap: 80px; /* Ajusta el espacio entre el texto y la tarjeta */
 <body>
   <div class="navbar">
     <div class="logo">
-      <a href="{% url 'index' %}">Gestor Médico</a>
+      <a href="{% url 'index' %}">Inicio</a>
     </div>
     <div class="hamburger" onclick="toggleMenu()">☰</div>
     <div class="menu" id="menu">
-      <a href="#">Ayuda</a>
-<a href="{% url 'registro' %}">Registrarse</a>
+      <a href="#" onclick="abrirAyuda();return false;">Ayuda</a>
+      {% if user.is_authenticated %}
+        <a href="{% url 'logout' %}">Cerrar Sesión</a>
+      {% else %}
+        <a href="{% url 'login' %}">Iniciar Sesión</a>
+        <a href="{% url 'registro' %}">Registrarse</a>
+      {% endif %}
 
     </div>
   </div>
@@ -561,6 +566,24 @@ gap: 80px; /* Ajusta el espacio entre el texto y la tarjeta */
 
   <div class="contenido" style="position: relative; z-index: 3;">
     {% block content %}{% endblock %}
+  </div>
+
+  <!-- Modal de Ayuda -->
+  <div id="modalAyuda" style="display:none; position:fixed; z-index:99999; left:0; top:0; width:100vw; height:100vh; background:rgba(17,34,64,0.7); justify-content:center; align-items:center;">
+    <div style="background:#fff; border-radius:16px; max-width:400px; width:90vw; padding:32px 20px 20px 20px; box-shadow:0 0 30px #4fa7ff55; position:relative;">
+      <button onclick="cerrarAyuda()" style="position:absolute; top:10px; right:16px; font-size:2rem; color:#4fa7ff; background:none; border:none; cursor:pointer;">&times;</button>
+      <h2 style="color:#4fa7ff; text-align:center; margin-bottom:18px;">Ayuda del Sistema</h2>
+      <ul style="color:#112240; font-size:1.05rem; padding-left:18px;">
+        <li><b>¿Cómo agendar una cita?</b> Ve a tu panel, selecciona doctor, fecha y motivo, y presiona "Agendar Cita".</li>
+        <li><b>¿Cómo editar mis datos?</b> Haz clic en "Editar Datos" en tu perfil y guarda los cambios.</li>
+        <li><b>¿Cómo recuperar mi contraseña?</b> Usa "¿Olvidaste tu contraseña?" en el login y sigue las instrucciones del correo.</li>
+        <li><b>¿Cómo imprime mi diagnóstico?</b> En el historial de citas, haz clic en "Imprimir" junto al diagnóstico.</li>
+        <li><b>¿Problemas o dudas?</b> Escribe a <a href="mailto:soporte@unap.edu.pe" style="color:#4fa7ff;">soporte@unap.edu.pe</li>
+      </ul>
+      <div style="text-align:center; margin-top:18px;">
+        <button onclick="cerrarAyuda()" style="background:#4fa7ff; color:#fff; border:none; border-radius:8px; padding:10px 30px; font-weight:700; font-size:1rem; cursor:pointer;">Cerrar</button>
+      </div>
+    </div>
   </div>
 
   <script>
@@ -598,7 +621,12 @@ function crearRejilla() {
 crearRejilla();
 window.addEventListener('resize', crearRejilla);
 
-
+function abrirAyuda() {
+  document.getElementById('modalAyuda').style.display = 'flex';
+}
+function cerrarAyuda() {
+  document.getElementById('modalAyuda').style.display = 'none';
+}
   </script>
 </body>
 </html>

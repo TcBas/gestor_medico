@@ -1,103 +1,187 @@
 {% extends 'base.html' %}
-
 {% block content %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
-  .contenido {
+  .doctor-dashboard {
     display: flex;
-    justify-content: center;
-    gap: 40px;
-    padding: 30px;
-    background: #1e1e2f;
-    min-height: 100vh;
-    font-family: 'Segoe UI', sans-serif;
     flex-wrap: wrap;
-    text-align: center;
+    gap: 24px;
+    padding: 90px 8px 32px 8px;
+    max-width: 1200px;
+    margin: 0 auto;
+    box-sizing: border-box;
   }
-
-  .seccion {
-    flex: 1;
-    background-color: #2c2f48;
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
-    color: white;
-    min-width: 300px;
-    max-width: 500px;
+  .panel {
+    background: rgba(255,255,255,0.13);
+    border-radius: 18px;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18);
+    backdrop-filter: blur(10px);
+    border: 1.5px solid rgba(79, 167, 255, 0.18);
+    padding: 24px 18px 18px 18px;
+    min-width: 260px;
+    flex: 1 1 320px;
+    margin-bottom: 24px;
+    position: relative;
   }
-
-  h1 {
-    color: #00bfff;
-    margin-bottom: 15px;
+  .panel h2, .panel h3 {
+    color: #4fa7ff;
+    margin-bottom: 16px;
+    font-size: 1.2rem;
+    font-weight: 700;
   }
-
-  h2 {
-    color: #00bfff;
-    margin-bottom: 20px;
-  }
-
-  .glowing-btn {
-    display: inline-block;
-    background: linear-gradient(to right, #4fa7ff, #6c63ff);
-    color: white;
-    padding: 12px 20px;
-    border-radius: 30px;
-    font-weight: bold;
-    margin-top: 20px;
-    text-decoration: none;
-    transition: 0.3s ease;
-  }
-
-  .glowing-btn:hover {
-    background: linear-gradient(to right, #6c63ff, #4fa7ff);
-    box-shadow: 0 0 15px #6c63ff;
-    transform: scale(1.05);
-  }
-
-  .cita-item {
-    background-color: #1a1d33;
-    border: 1px solid #00bfff;
+  .pacientes-lista {
+    max-height: 400px;
+    overflow-y: auto;
+    background: rgba(44,47,72,0.13);
     border-radius: 10px;
-    padding: 15px;
-    margin-top: 15px;
+    padding: 10px;
+  }
+  .paciente-item {
+    padding: 10px 8px;
+    border-bottom: 1px solid #4fa7ff33;
+    cursor: pointer;
+    color: #fff;
+    transition: background 0.2s;
+  }
+  .paciente-item:last-child { border-bottom: none; }
+  .paciente-item:hover, .paciente-item.selected {
+    background: #4fa7ff33;
+    color: #4fa7ff;
+  }
+  .info-paciente {
+    margin-bottom: 18px;
+    color: #fff;
+  }
+  .info-paciente strong { color: #4fa7ff; }
+  .historial-citas-doctor {
+    background: rgba(26, 29, 51, 0.7);
+    border: 1px solid #4fa7ff;
+    border-radius: 14px;
+    padding: 12px 8px;
+    color: #fff;
+    max-height: 260px;
+    overflow-y: auto;
+    margin-bottom: 10px;
+  }
+  .historial-citas-doctor ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .historial-citas-doctor li {
+    border-bottom: 1px solid #4fa7ff33;
+    padding: 8px 0;
+    margin-bottom: 6px;
+  }
+  .historial-citas-doctor li:last-child { border-bottom: none; }
+  .form-analisis {
+    background: rgba(255,255,255,0.08);
+    border-radius: 10px;
+    padding: 12px 10px;
+    margin-top: 10px;
+  }
+  .form-analisis label {
+    color: #4fa7ff;
+    font-weight: 600;
+    margin-top: 8px;
+    display: block;
     text-align: left;
+    font-size: 1rem;
   }
-
-  .cita-item strong {
-    color: #00bfff;
+  .form-analisis input, .form-analisis select, .form-analisis textarea {
+    width: 100%;
+    padding: 7px;
+    border-radius: 6px;
+    border: 1px solid #4fa7ff44;
+    background: rgba(255,255,255,0.13);
+    color: #112240;
+    margin-bottom: 8px;
+    font-size: 1rem;
   }
-
-  .no-citas {
-    color: #aaa;
-    margin-top: 20px;
+  .form-analisis button {
+    background: #4fa7ff;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 0;
+    font-weight: 700;
+    width: 100%;
+    font-size: 1.05rem;
+    margin-top: 8px;
+    box-shadow: 0 0 10px #4fa7ff44;
+    cursor: pointer;
+    transition: background 0.3s, color 0.3s;
+  }
+  .form-analisis button:hover {
+    background: #fff;
+    color: #4fa7ff;
+    border: 2px solid #4fa7ff;
+  }
+  @media (max-width: 900px) {
+    .doctor-dashboard { flex-direction: column; }
+    .panel { min-width: 0; width: 100%; }
   }
 </style>
-
-<div class="contenido">
-
-  <!-- Sección de bienvenida -->
-  <div class="seccion">
-    <h1>Bienvenido, Doctor</h1>
-    <p>Estas son tus citas aceptadas:</p>
-    <a href="{% url 'logout' %}" class="glowing-btn">Cerrar Sesión</a>
-  </div>
-
-  <!-- Sección de citas -->
-  <div class="seccion">
-    <h2>Cita Reciente</h2>
-    {% if citas_aceptadas %}
-      {% for cita in citas_aceptadas %}
-        {% if forloop.first %}
-          <div class="cita-item">
-            <strong>Estudiante:</strong> {{ cita.estudiante.nombres }} {{ cita.estudiante.apellido_paterno }}<br>
-            <strong>Fecha:</strong> {{ cita.fecha|date:"d/m/Y H:i" }}<br>
-            <strong>Motivo:</strong> {{ cita.motivo }}
-          </div>
-        {% endif %}
+<div class="doctor-dashboard">
+  <!-- Panel de pacientes -->
+  <div class="panel" style="max-width:320px;">
+    <h2><i class="fas fa-users"></i> Pacientes</h2>
+    <div class="pacientes-lista">
+      {% for paciente in pacientes %}
+        <div class="paciente-item{% if paciente.id == paciente_seleccionado.id %} selected{% endif %}" onclick="window.location='?paciente={{ paciente.id }}'">
+          {{ paciente.nombres }} {{ paciente.apellido_paterno }}
+        </div>
+      {% empty %}
+        <div style="color:#aaa;">No hay pacientes.</div>
       {% endfor %}
+    </div>
+  </div>
+  <!-- Panel de información y edición -->
+  <div class="panel" style="flex:2;min-width:320px;">
+    {% if paciente_seleccionado %}
+      <h2><i class="fas fa-user"></i> Información del Paciente</h2>
+      <div class="info-paciente">
+        <strong>Nombre:</strong> {{ paciente_seleccionado.nombres }} {{ paciente_seleccionado.apellido_paterno }} {{ paciente_seleccionado.apellido_materno }}<br>
+        <strong>DNI:</strong> {{ paciente_seleccionado.dni }}<br>
+        <strong>Teléfono:</strong> {{ paciente_seleccionado.telefono }}<br>
+        <strong>Dirección:</strong> {{ paciente_seleccionado.direccion }}<br>
+        <strong>Fecha de Nacimiento:</strong> {{ paciente_seleccionado.fecha_nacimiento }}<br>
+        <strong>Código Matrícula:</strong> {{ paciente_seleccionado.codigo_matricula }}<br>
+        <strong>Carrera:</strong> {{ paciente_seleccionado.get_carrera_display }}
+      </div>
+      <div class="historial-citas-doctor">
+        <h3>Historial de Citas</h3>
+        <ul>
+          {% for cita in citas_paciente %}
+          <li>
+            <strong>Fecha:</strong> {{ cita.fecha|date:"d/m/Y H:i" }}<br>
+            <strong>Motivo:</strong> {{ cita.motivo }}<br>
+            <strong>Estado:</strong> {{ cita.estado }}<br>
+            <strong>Diagnóstico:</strong> {{ cita.diagnostico|default:'-' }}
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+      <form class="form-analisis" method="POST" action="?paciente={{ paciente_seleccionado.id }}">
+        {% csrf_token %}
+        <h3><i class="fas fa-notes-medical"></i> Registrar/Editar Datos Médicos</h3>
+        <label for="peso">Peso (kg):</label>
+        <input type="number" step="0.1" name="peso" id="peso" value="{{ analisis.peso|default:'' }}">
+        <label for="altura">Altura (cm):</label>
+        <input type="number" step="0.1" name="altura" id="altura" value="{{ analisis.altura|default:'' }}">
+        <label for="tipo_sangre">Tipo de Sangre:</label>
+        <input type="text" name="tipo_sangre" id="tipo_sangre" value="{{ analisis.tipo_sangre|default:'' }}">
+        <label for="alergias">Alergias:</label>
+        <input type="text" name="alergias" id="alergias" value="{{ analisis.alergias|default:'' }}">
+        <label for="observaciones">Observaciones:</label>
+        <textarea name="observaciones" id="observaciones">{{ analisis.observaciones|default:'' }}</textarea>
+        <label for="diagnostico">Diagnóstico:</label>
+        <textarea name="diagnostico" id="diagnostico">{{ analisis.diagnostico|default:'' }}</textarea>
+        <button type="submit"><i class="fas fa-save"></i> Guardar Datos</button>
+      </form>
     {% else %}
-      <p class="no-citas">No tienes citas aceptadas actualmente.</p>
+      <div style="color:#aaa;">Selecciona un paciente para ver y editar su información.</div>
     {% endif %}
   </div>
-
 </div>
 {% endblock %}
