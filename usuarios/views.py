@@ -143,14 +143,15 @@ def vista_doctor(request):
     pacientes = Perfil.objects.filter(id__in=pacientes_ids)
 
     # Calcular fechas de la semana a mostrar (lunes a viernes)
-    hoy = timezone.now()
+    hoy = timezone.localdate()  # Solo la fecha, sin hora
     # Si hoy es sábado (5) o domingo (6), mostrar la semana siguiente
     if hoy.weekday() >= 5:
-        inicio_semana = (hoy + timedelta(days=(7 - hoy.weekday()))).replace(hour=0, minute=0, second=0, microsecond=0)
+        dias_hasta_lunes = 7 - hoy.weekday()
+        inicio_semana = hoy + timedelta(days=dias_hasta_lunes)
     else:
         inicio_semana = hoy - timedelta(days=hoy.weekday())  # lunes de la semana actual
     dias_semana = [inicio_semana + timedelta(days=i) for i in range(5)]  # lunes a viernes
-    fin_semana = inicio_semana + timedelta(days=4, hours=23, minutes=59, seconds=59)
+    fin_semana = inicio_semana + timedelta(days=4)
 
     # Citas de la semana actual (todas, no solo del paciente seleccionado)
     citas_semana = Cita.objects.filter(
