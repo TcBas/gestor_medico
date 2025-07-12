@@ -80,3 +80,12 @@ celerybeat.pid
 
 # Archivos de node (si usas webpack, etc.)
 node_modules/
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Otros archivos generados por Python
+*.pyo
+*.pyd
+*.so
