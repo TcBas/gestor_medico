@@ -1,29 +1,44 @@
-# Entornos virtuales
+### Entornos virtuales ###
 venv/
-.env/
 .venv/
 env/
+.env/
 
-# Archivos de Python
-*.pyc
+### Python ###
+# Bytecode y caché
 __pycache__/
+*.py[cod]
+*$py.class
 *.pyo
 *.pyd
-*.py,cover
 *.so
-.Python
 
-# Entornos de desarrollo
+# Archivos generados
+*.py,cover
+*.cover
+*.egg-info/
+*.egg
+*.manifest
+*.spec
+.pytest_cache/
+
+### Bases de datos ###
+*.sqlite3
+*.db
+
+### Logs y debug ###
+*.log
+logs/
+.pip/
+
+### Entornos de desarrollo ###
 .idea/
+*.iml
 .vscode/
 *.swp
 *.swo
 
-# Base de datos
-*.sqlite3
-*.db
-
-# Archivos de configuración local
+### Configuración y secretos ###
 .env
 .env.local
 .env.dev
@@ -31,61 +46,32 @@ __pycache__/
 .env.staging
 secrets.json
 
-# Archivos estáticos y media
-/staticfiles/
-/media/
+### Archivos estáticos y media ###
+staticfiles/
+media/
 
-# Logs
-*.log
-logs/
-
-# Archivos de sistema
+### Sistemas operativos ###
 .DS_Store
 Thumbs.db
+[Dd]esktop.ini
+.Trash-*
+.nfs*
 
-# Archivos de cobertura
-.coverage
-htmlcov/
-
-# Archivos de documentación
+### Documentación ###
 docs/_build/
+htmlcov/
+.coverage
 
-# Archivos de Jupyter Notebook
+### Jupyter ###
 .ipynb_checkpoints/
 
-# Archivos de PyCharm
-.idea/
-*.iml
-
-# Archivos de VS Code
-.vscode/
-
-# Archivos de distribución y paquetes
+### Paquetes y builds ###
 dist/
 build/
-*.egg-info/
-*.egg
-*.manifest
-*.spec
 
-# Archivos de caché de pip
-.pip/
-
-# Archivos de pytest
-.pytest_cache/
-
-# Archivos de celery
+### Celery ###
 celerybeat-schedule.*
 celerybeat.pid
 
-# Archivos de node (si usas webpack, etc.)
+### Node (si usas frontend) ###
 node_modules/
-# Python cache
-__pycache__/
-*.py[cod]
-*$py.class
-
-# Otros archivos generados por Python
-*.pyo
-*.pyd
-*.so
