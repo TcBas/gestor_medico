@@ -75,14 +75,15 @@ class Cita(models.Model):
         related_name='citas_doctor',
         limit_choices_to={'tipo': 'doctor'}
     )
-    fecha = models.DateTimeField()
+    fecha = models.DateField()  # Solo fecha, sin hora
+    orden = models.PositiveSmallIntegerField()  # Número de orden (1-10)
     estado = models.CharField(max_length=50, choices=ESTADOS, default='Pendiente')
     motivo = models.TextField()
 
     def __str__(self):
         estudiante_nombre = f"{self.estudiante.nombres} {self.estudiante.apellido_paterno} {self.estudiante.apellido_materno or ''}"
         doctor_nombre = f"{self.doctor.nombres} {self.doctor.apellido_paterno} {self.doctor.apellido_materno or ''}"
-        return f"Cita de {estudiante_nombre.strip()} con {doctor_nombre.strip()} - {self.fecha}"
+        return f"Cita de {estudiante_nombre.strip()} con {doctor_nombre.strip()} - {self.fecha} (Orden {self.orden})"
 
 class AnalisisMedico(models.Model):
     paciente = models.OneToOneField(Perfil, on_delete=models.CASCADE, related_name='analisis_medico', limit_choices_to={'tipo': 'estudiante'})

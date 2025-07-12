@@ -76,15 +76,29 @@ def vista_estudiante(request):
 
             if doctor_id and fecha and motivo:
                 doctor = Perfil.objects.get(id=doctor_id)
-                Cita.objects.create(
-                    estudiante=estudiante,
-                    doctor=doctor,
-                    fecha=fecha,
-                    motivo=motivo,
-                    estado='Pendiente'
-                )
-                messages.success(request, "Cita agendada con éxito.")
-                return redirect('vista_estudiante')
+                # Buscar el siguiente número de orden disponible (1-10) para ese doctor y fecha
+                from datetime import datetime as dt
+                fecha_date = dt.strptime(fecha, "%Y-%m-%d").date()
+                citas_dia = Cita.objects.filter(doctor=doctor, fecha=fecha_date)
+                ordenes_ocupados = set(citas_dia.values_list('orden', flat=True))
+                orden_disponible = None
+                for i in range(1, 11):
+                    if i not in ordenes_ocupados:
+                        orden_disponible = i
+                        break
+                if orden_disponible is None:
+                    messages.error(request, "Ya no hay cupos disponibles para ese doctor en ese día. Máximo 10 pacientes por día.")
+                else:
+                    Cita.objects.create(
+                        estudiante=estudiante,
+                        doctor=doctor,
+                        fecha=fecha_date,
+                        orden=orden_disponible,
+                        motivo=motivo,
+                        estado='Pendiente'
+                    )
+                    messages.success(request, f"Cita agendada con éxito. Tu número de orden es {orden_disponible}.")
+                    return redirect('vista_estudiante')
             else:
                 messages.error(request, "Por favor, completa todos los campos.")
 
@@ -117,6 +131,7 @@ def vista_estudiante(request):
 
 def vista_doctor(request):
     from .models import AnalisisMedico
+    from collections import defaultdict
     perfil = Perfil.objects.get(user=request.user)
 
     # Obtener todos los pacientes que tienen citas aceptadas con este doctor
@@ -126,6 +141,34 @@ def vista_doctor(request):
     ).order_by('fecha')
     pacientes_ids = list(citas_aceptadas.values_list('estudiante', flat=True).distinct())
     pacientes = Perfil.objects.filter(id__in=pacientes_ids)
+
+    # Calcular fechas de la semana a mostrar (lunes a viernes)
+    hoy = timezone.now()
+    # Si hoy es sábado (5) o domingo (6), mostrar la semana siguiente
+    if hoy.weekday() >= 5:
+        inicio_semana = (hoy + timedelta(days=(7 - hoy.weekday()))).replace(hour=0, minute=0, second=0, microsecond=0)
+    else:
+        inicio_semana = hoy - timedelta(days=hoy.weekday())  # lunes de la semana actual
+    dias_semana = [inicio_semana + timedelta(days=i) for i in range(5)]  # lunes a viernes
+    fin_semana = inicio_semana + timedelta(days=4, hours=23, minutes=59, seconds=59)
+
+    # Citas de la semana actual (todas, no solo del paciente seleccionado)
+    citas_semana = Cita.objects.filter(
+        doctor=perfil,
+        estado='Aceptada',
+        fecha__range=(inicio_semana, fin_semana)
+    )
+
+    # Agrupar citas por día
+    citas_por_dia = defaultdict(list)
+    for cita in citas_semana:
+        dia = cita.fecha
+        citas_por_dia[dia].append(cita)
+    # Crear lista de días con sus citas para la plantilla
+    citas_por_dia_lista = []
+    for dia in dias_semana:
+        citas = citas_por_dia.get(dia.date() if hasattr(dia, 'date') else dia, [])
+        citas_por_dia_lista.append({'dia': dia, 'citas': citas})
 
     # Selección de paciente
     paciente_id = request.GET.get('paciente')
@@ -187,6 +230,7 @@ def vista_doctor(request):
         'paciente_seleccionado': paciente_seleccionado,
         'citas_paciente': citas_paciente,
         'analisis': analisis,
+        'citas_por_dia_lista': citas_por_dia_lista,
     })
 
 def perfil_estudiante(request):

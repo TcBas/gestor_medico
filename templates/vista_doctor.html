@@ -2,6 +2,85 @@
 {% block content %}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
+  .semana-grid {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 40px;
+    margin-top: 90px;
+    justify-content: center;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .dia-panel {
+    flex: 1;
+    background: rgba(255,255,255,0.13);
+    border-radius: 18px;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18);
+    backdrop-filter: blur(10px);
+    border: 1.5px solid rgba(79, 167, 255, 0.18);
+    padding: 24px 16px 18px 16px;
+    min-width: 140px;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    margin-bottom: 0;
+  }
+  .dia-header {
+    font-weight: 700;
+    color: #4fa7ff;
+    text-align: center;
+    font-size: 1.18rem;
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+    text-shadow: 0 2px 8px #4fa7ff22;
+  }
+  .dia-fecha {
+    font-size: 1.01em;
+    color: #b3d8ff;
+    text-align: center;
+    margin-bottom: 12px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+  }
+  .cita-card {
+    background: rgba(44, 47, 72, 0.18);
+    border: 1.5px solid #4fa7ff33;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px 0 rgba(79, 167, 255, 0.10);
+    padding: 10px 8px 8px 8px;
+    margin-bottom: 10px;
+    color: #fff;
+    font-size: 1.01rem;
+    transition: box-shadow 0.2s, border 0.2s, background 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .cita-card:hover {
+    box-shadow: 0 4px 18px 0 #4fa7ff33;
+    border: 2px solid #4fa7ff;
+    background: rgba(44, 47, 72, 0.33);
+  }
+  .cita-card b {
+    color: #4fa7ff;
+    font-weight: 600;
+    font-size: 1.01em;
+    display: inline-block;
+    margin-bottom: 2px;
+  }
+  .cita-card .cita-hora {
+    color: #fff;
+    background: #4fa7ff;
+    border-radius: 6px;
+    padding: 2px 8px;
+    font-size: 0.98em;
+    margin: 4px 0 8px 0;
+    display: inline-block;
+    font-weight: 700;
+    letter-spacing: 1px;
+    box-shadow: 0 0 8px #4fa7ff22;
+  }
   .doctor-dashboard {
     display: flex;
     flex-wrap: wrap;
@@ -171,6 +250,31 @@
     .panel { min-width: 0; width: 100%; }
   }
 </style>
+<div class="semana-grid">
+  {% for dia_citas in citas_por_dia_lista %}
+    <div class="dia-panel">
+      <div class="dia-header">
+        {{ dia_citas.dia|date:"l"|slice:":3"|title }}
+      </div>
+      <div class="dia-fecha">{{ dia_citas.dia|date:"d/m/Y" }}</div>
+      <div style="flex:1;">
+        {% if dia_citas.citas %}
+          {% for cita in dia_citas.citas %}
+            <div class="cita-card">
+              <b>Motivo:</b><br>
+              {{ cita.motivo }}<br>
+              <span class="cita-hora">Orden: {{ cita.orden }}</span><br>
+              <b>Paciente:</b><br>
+              {{ cita.estudiante.nombres }} {{ cita.estudiante.apellido_paterno }}
+            </div>
+          {% endfor %}
+        {% else %}
+          <div style="color:#aaa; text-align:center;">Sin citas</div>
+        {% endif %}
+      </div>
+    </div>
+  {% endfor %}
+</div>
 <div class="doctor-dashboard">
   <!-- Panel de pacientes -->
   <div class="panel panel-pacientes" style="max-width:340px;">
@@ -203,7 +307,7 @@
         <ul>
           {% for cita in citas_paciente %}
           <li>
-            <strong>Fecha:</strong> {{ cita.fecha|date:"d/m/Y H:i" }}<br>
+            <strong>Fecha:</strong> {{ cita.fecha|date:"d/m/Y" }}<br>
             <strong>Motivo:</strong> {{ cita.motivo }}<br>
             <strong>Estado:</strong> {{ cita.estado }}<br>
             <strong>Diagnóstico:</strong> {{ cita.diagnostico|default:'-' }}

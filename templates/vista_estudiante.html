@@ -353,7 +353,7 @@
       <ul>
         {% for cita in citas %}
         <li>
-          <strong>Fecha:</strong> {{ cita.fecha|date:"d/m/Y H:i" }}<br>
+          <strong>Fecha:</strong> {{ cita.fecha|date:"d/m/Y" }}<br>
           <strong>Doctor:</strong> {{ cita.doctor.nombres }} {{ cita.doctor.apellido_paterno }}<br>
           <strong>Motivo:</strong> {{ cita.motivo }}<br>
           <strong>Estado:</strong> <span class="badge">{{ cita.estado }}</span><br>
@@ -387,8 +387,8 @@
               <option value="{{ doctor.id }}">{{ doctor.nombres }} {{ doctor.apellido_paterno }}</option>
             {% endfor %}
           </select>
-          <label for="fecha">Fecha y Hora de la Cita:</label>
-          <input type="datetime-local" name="fecha" id="fecha" required>
+          <label for="fecha">Fecha de la Cita:</label>
+          <input type="date" name="fecha" id="fecha" required>
           <label for="motivo">Motivo de la Cita:</label>
           <textarea name="motivo" id="motivo" required placeholder="Escribe el motivo de la cita..."></textarea>
           <button type="submit" class="glowing-btn"><i class="fas fa-plus"></i> Agendar Cita</button>
@@ -400,7 +400,7 @@
       <div class="card-header"><i class="fas fa-bell"></i><h3>Cita Pendiente</h3></div>
       <div style="color: #fff;">
         <strong>Doctor:</strong> {{ citas_esta_semana.doctor.nombres }} {{ citas_esta_semana.doctor.apellido_paterno }}<br>
-        <strong>Fecha:</strong> {{ citas_esta_semana.fecha|date:"d/m/Y H:i" }}<br>
+        <strong>Fecha:</strong> {{ citas_esta_semana.fecha|date:"d/m/Y" }}<br>
         <strong>Motivo:</strong> {{ citas_esta_semana.motivo }}<br>
         <strong>Estado:</strong> <span class="badge">{{ citas_esta_semana.estado }}</span>
       </div>
@@ -465,8 +465,24 @@
     maxDate.setMonth(maxDate.getMonth() + 2);
     const fechaInput = document.getElementById('fecha');
     if(fechaInput) {
-      fechaInput.min = hoy.toISOString().slice(0, 16);
-      fechaInput.max = maxDate.toISOString().slice(0, 16);
+      // Limitar fechas mínimas y máximas
+      fechaInput.min = hoy.toISOString().slice(0, 10);
+      fechaInput.max = maxDate.toISOString().slice(0, 10);
+      // Solo permitir lunes a viernes
+      fechaInput.addEventListener('change', function() {
+        const valor = this.value;
+        if (valor) {
+          // Ajuste: el input type="date" interpreta la fecha en UTC, así que puede haber desfase de zona horaria
+          // Usar split para evitar problemas de zona horaria
+          const partes = valor.split('-');
+          const d = new Date(Number(partes[0]), Number(partes[1]) - 1, Number(partes[2]));
+          const day = d.getDay(); // 0=domingo, 1=lunes, ..., 6=sábado
+          if (day === 0 || day === 6) {
+            alert('Solo puedes seleccionar días de lunes a viernes.');
+            this.value = '';
+          }
+        }
+      });
     }
   });
   // Imprimir solo el diagnóstico seleccionado
