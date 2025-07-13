@@ -434,13 +434,14 @@ gap: 80px; /* Ajusta el espacio entre el texto y la tarjeta */
 }
 
 .login-wrapper {
-  pointer-events: none;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  height: 100vh;
+  justify-content: center;
+  min-height: calc(100vh - 60px); /* Resta la altura de la navbar */
   position: relative;
   z-index: 3;
+  padding: 20px 0;
 }
 
 .login-form {
@@ -532,13 +533,141 @@ gap: 80px; /* Ajusta el espacio entre el texto y la tarjeta */
   min-height: calc(100vh - 60px);
 }
 
-.messages {
-  padding: 10px;
-  border-radius: 8px;
-  background-color: #d4edda;
-  border: 1px solid #c3e6cb;
-  color: #155724;
+/*MENSAJES*/
+/* Estilos completos para mensajes */
+.login-messages {
+  width: 300px;
+  margin-bottom: 20px;
   list-style: none;
+  padding: 0;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+}
+
+.login-messages li {
+  padding: 12px 15px;
+  text-align: center;
+  font-weight: 500;
+  margin: 2px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.4s ease-out;
+}
+
+/* Mensajes de ERROR (rojos intensos) */
+.login-messages .error {
+  background: linear-gradient(to right, #ffebee, #ffcdd2);
+  color: #c62828;
+  border-left: 4px solid #d32f2f;
+  box-shadow: 0 2px 5px rgba(244, 67, 54, 0.2);
+  font-weight: 600;
+}
+
+.login-messages .error::before {
+  content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='%23c62828'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z'/%3E%3C/svg%3E");
+  margin-right: 8px;
+}
+
+/* Mensajes de SUCCESS (verdes) */
+.login-messages .success {
+  background: linear-gradient(to right, #e8f5e9, #c8e6c9);
+  color: #2e7d32;
+  border-left: 4px solid #43a047;
+  box-shadow: 0 2px 5px rgba(76, 175, 80, 0.2);
+}
+
+.login-messages .success::before {
+  content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='%232e7d32'%3E%3Cpath d='M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z'/%3E%3C/svg%3E");
+  margin-right: 8px;
+}
+
+/* Mensajes de WARNING (amarillos/naranjas) */
+.login-messages .warning {
+  background: linear-gradient(to right, #fff3e0, #ffe0b2);
+  color: #e65100;
+  border-left: 4px solid #fb8c00;
+  box-shadow: 0 2px 5px rgba(255, 152, 0, 0.2);
+}
+
+.login-messages .warning::before {
+  content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='%23e65100'%3E%3Cpath d='M12 2L1 21h22L12 2zm0 3.5L18.5 19h-13L12 5.5z'/%3E%3Cpath d='M12 16c.6 0 1-.4 1-1s-.4-1-1-1-1 .4-1 1 .4 1 1 1zm0-4c.6 0 1-.4 1-1V8c0-.6-.4-1-1-1s-1 .4-1 1v3c0 .6.4 1 1 1z'/%3E%3C/svg%3E");
+  margin-right: 8px;
+}
+
+/* Mensajes INFO (azules) */
+.login-messages .info {
+  background: linear-gradient(to right, #e3f2fd, #bbdefb);
+  color: #1565c0;
+  border-left: 4px solid #1976d2;
+  box-shadow: 0 2px 5px rgba(25, 118, 210, 0.2);
+}
+
+.login-messages .info::before {
+  content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='%231565c0'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z'/%3E%3C/svg%3E");
+  margin-right: 8px;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+/* Estilos optimizados para mensajes - Solo 12 líneas */
+.messages {
+  width: 300px;
+  margin: 0 auto 20px;
+  padding: 0;
+  list-style: none;
+}
+
+.messages li {
+  padding: 12px;
+  border-radius: 8px;
+  text-align: center;
+  font-weight: 500;
+}
+
+.messages .error {
+  background: #ffebee;
+  color: #c62828;
+  border-left: 4px solid #c62828;
+}
+
+.messages .success {
+  background: #e8f5e9;
+  color: #2e7d32;
+  border-left: 4px solid #2e7d32;
+}
+
+/* Para mensajes de error */
+.error {
+  background-color: #f8d7da;
+  color: #721c24;
+  border-color: #f5c6cb;
+}
+
+/* Para mensajes de advertencia */
+.warning {
+  background-color: #fff3cd;
+  color: #856404;
+  border-color: #ffeeba;
+}
+
+/* Alternativa más llamativa para errores */
+.login-messages .error {
+  background: linear-gradient(to right, #ffcdd2, #ffebee);
+  color: #b71c1c;
+  border-left: 4px solid #d32f2f;
+  box-shadow: 0 3px 5px rgba(244, 67, 54, 0.2);
+  font-weight: 600;
+}
+
+/* Con icono SVG integrado */
+.login-messages .error::before {
+  content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='%23c62828'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z'/%3E%3C/svg%3E");
+  vertical-align: middle;
+  margin-right: 8px;
 }
 
   </style>
