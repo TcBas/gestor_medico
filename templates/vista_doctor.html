@@ -290,7 +290,7 @@
     </div>
   </div>
   <!-- Panel de información y edición -->
-  <div class="panel" style="flex:2;min-width:320px;">
+  <div class="panel panel-pacientes" style="flex:2;min-width:320px;">
     {% if paciente_seleccionado %}
       <h2><i class="fas fa-user"></i> Información del Paciente</h2>
       <div class="info-paciente">
@@ -324,8 +324,19 @@
         <input type="number" step="0.1" name="altura" id="altura" value="{{ analisis.altura|default_if_none:''|floatformat:'-2' }}">
         <label for="tipo_sangre">Tipo de Sangre:</label>
         <input type="text" name="tipo_sangre" id="tipo_sangre" value="{{ analisis.tipo_sangre|default:'' }}">
+        <label for="sexo">Sexo:</label>
+        <select name="sexo" id="sexo">
+          <option value="" {% if not analisis.sexo %}selected{% endif %}>-</option>
+          <option value="Masculino" {% if analisis.sexo == 'Masculino' %}selected{% endif %}>Masculino</option>
+          <option value="Femenino" {% if analisis.sexo == 'Femenino' %}selected{% endif %}>Femenino</option>
+          <option value="Otro" {% if analisis.sexo == 'Otro' %}selected{% endif %}>Otro</option>
+        </select>
         <label for="alergias">Alergias:</label>
         <input type="text" name="alergias" id="alergias" value="{{ analisis.alergias|default:'' }}">
+        <label for="enfermedades_cronicas">Enfermedades crónicas:</label>
+        <textarea name="enfermedades_cronicas" id="enfermedades_cronicas">{{ analisis.enfermedades_cronicas|default:'' }}</textarea>
+        <label for="medicamentos_actuales">Medicamentos actuales:</label>
+        <textarea name="medicamentos_actuales" id="medicamentos_actuales">{{ analisis.medicamentos_actuales|default:'' }}</textarea>
         <label for="observaciones">Observaciones:</label>
         <textarea name="observaciones" id="observaciones">{{ analisis.observaciones|default:'' }}</textarea>
         <label for="diagnostico">Diagnóstico:</label>

@@ -90,7 +90,10 @@ class AnalisisMedico(models.Model):
     peso = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
     altura = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
     tipo_sangre = models.CharField(max_length=10, blank=True, null=True)
+    sexo = models.CharField(max_length=10, blank=True, null=True)
     alergias = models.CharField(max_length=255, blank=True, null=True)
+    enfermedades_cronicas = models.TextField(blank=True, null=True)
+    medicamentos_actuales = models.TextField(blank=True, null=True)
     observaciones = models.TextField(blank=True, null=True)
     diagnostico = models.TextField(blank=True, null=True)
 

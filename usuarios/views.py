@@ -104,14 +104,36 @@ def vista_estudiante(request):
 
     citas = Cita.objects.filter(estudiante=estudiante).order_by('-fecha')
 
-    # Simulación de análisis médico
-    analisis = {
-        'tipo_sangre': 'O+',
-        'alergias': 'Ninguna',
-        'peso': '70',
-        'altura': '175',
-        'observaciones': 'Sin observaciones'
-    }
+    # ¿El estudiante tiene alguna cita pendiente?
+    tiene_pendiente = any(cita.estado == 'Pendiente' for cita in citas)
+
+    # Obtener análisis médico real si existe
+    from .models import AnalisisMedico
+    try:
+        analisis_obj = AnalisisMedico.objects.get(paciente=estudiante)
+        analisis = {
+            'tipo_sangre': analisis_obj.tipo_sangre,
+            'alergias': analisis_obj.alergias,
+            'peso': analisis_obj.peso,
+            'altura': analisis_obj.altura,
+            'sexo': analisis_obj.sexo,
+            'enfermedades_cronicas': analisis_obj.enfermedades_cronicas,
+            'medicamentos_actuales': analisis_obj.medicamentos_actuales,
+            'observaciones': analisis_obj.observaciones,
+            'diagnostico': analisis_obj.diagnostico,
+        }
+    except AnalisisMedico.DoesNotExist:
+        analisis = {
+            'tipo_sangre': '',
+            'alergias': '',
+            'peso': '',
+            'altura': '',
+            'sexo': '',
+            'enfermedades_cronicas': '',
+            'medicamentos_actuales': '',
+            'observaciones': '',
+            'diagnostico': '',
+        }
 
     # Simulación de diagnóstico en cada cita (si no existe el campo)
     for cita in citas:
@@ -127,6 +149,7 @@ def vista_estudiante(request):
         'analisis': analisis,
         'perfil': estudiante,
         'carreras': CARRERAS,
+        'tiene_pendiente': tiene_pendiente,
     })
 
 def vista_doctor(request):
@@ -187,14 +210,20 @@ def vista_doctor(request):
                 peso = request.POST.get('peso')
                 altura = request.POST.get('altura')
                 tipo_sangre = request.POST.get('tipo_sangre')
+                sexo = request.POST.get('sexo')
                 alergias = request.POST.get('alergias')
+                enfermedades_cronicas = request.POST.get('enfermedades_cronicas')
+                medicamentos_actuales = request.POST.get('medicamentos_actuales')
                 observaciones = request.POST.get('observaciones')
                 diagnostico = request.POST.get('diagnostico')
                 analisis_obj, _ = AnalisisMedico.objects.get_or_create(paciente=paciente_seleccionado)
                 analisis_obj.peso = peso or None
                 analisis_obj.altura = altura or None
                 analisis_obj.tipo_sangre = tipo_sangre or None
+                analisis_obj.sexo = sexo or None
                 analisis_obj.alergias = alergias or None
+                analisis_obj.enfermedades_cronicas = enfermedades_cronicas or None
+                analisis_obj.medicamentos_actuales = medicamentos_actuales or None
                 analisis_obj.observaciones = observaciones or None
                 analisis_obj.diagnostico = diagnostico or None
                 analisis_obj.save()
@@ -208,7 +237,10 @@ def vista_doctor(request):
                     'peso': analisis_obj.peso,
                     'altura': analisis_obj.altura,
                     'tipo_sangre': analisis_obj.tipo_sangre,
+                    'sexo': analisis_obj.sexo,
                     'alergias': analisis_obj.alergias,
+                    'enfermedades_cronicas': analisis_obj.enfermedades_cronicas,
+                    'medicamentos_actuales': analisis_obj.medicamentos_actuales,
                     'observaciones': analisis_obj.observaciones,
                     'diagnostico': analisis_obj.diagnostico,
                 }
@@ -217,7 +249,10 @@ def vista_doctor(request):
                     'peso': '',
                     'altura': '',
                     'tipo_sangre': '',
+                    'sexo': '',
                     'alergias': '',
+                    'enfermedades_cronicas': '',
+                    'medicamentos_actuales': '',
                     'observaciones': '',
                     'diagnostico': '',
                 }
