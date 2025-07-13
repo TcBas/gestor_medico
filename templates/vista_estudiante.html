@@ -421,7 +421,7 @@
   </div>
   <!-- DERECHA: Solicitar cita y cita pendiente -->
   <div>
-    <div class="panel-historial-estudiante">
+    <div class="panel-historial-estudiante" style="max-height: none; overflow-y: visible;">
       <div class="card-header"><i class="fas fa-calendar-plus"></i><h2>Solicitar Cita</h2></div>
       {% if tiene_pendiente %}
         <div class="cita-pendiente">
@@ -429,7 +429,7 @@
           <span>Podrás agendar otra cita cuando tu cita pendiente sea aceptada o rechazada.</span>
         </div>
       {% else %}
-        <form class="form-cita" method="POST">
+        <form class="form-cita" method="POST" style="text-align: center;">
           {% csrf_token %}
           <label for="doctor">Seleccionar Doctor:</label>
           <select name="doctor" id="doctor" required>
