@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from .forms import RegistroEstudianteForm, GestionCitaForm
 from django.contrib import messages
 
+from .services.gemini_assistant import asistente_medico
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
 from .models import Perfil, Cita
@@ -22,6 +23,7 @@ def registro_estudiante(request):
             return redirect('login')
     else:
         form = RegistroEstudianteForm()
+        
     return render(request, 'registro.html', {'form': form})
 
 
@@ -199,36 +201,35 @@ def vista_doctor(request):
     paciente_seleccionado = None
     citas_paciente = []
     analisis = None
+    resumen_ia = None
     if paciente_id:
         try:
             paciente_id_int = int(paciente_id)
             paciente_seleccionado = pacientes.get(id=paciente_id_int)
             citas_paciente = Cita.objects.filter(doctor=perfil, estudiante=paciente_seleccionado).order_by('-fecha')
-
-            # Guardar datos médicos si es POST
+            
+            
             if request.method == 'POST':
-                peso = request.POST.get('peso')
-                altura = request.POST.get('altura')
-                tipo_sangre = request.POST.get('tipo_sangre')
-                sexo = request.POST.get('sexo')
-                alergias = request.POST.get('alergias')
-                enfermedades_cronicas = request.POST.get('enfermedades_cronicas')
-                medicamentos_actuales = request.POST.get('medicamentos_actuales')
-                observaciones = request.POST.get('observaciones')
-                diagnostico = request.POST.get('diagnostico')
-                analisis_obj, _ = AnalisisMedico.objects.get_or_create(paciente=paciente_seleccionado)
-                analisis_obj.peso = peso or None
-                analisis_obj.altura = altura or None
-                analisis_obj.tipo_sangre = tipo_sangre or None
-                analisis_obj.sexo = sexo or None
-                analisis_obj.alergias = alergias or None
-                analisis_obj.enfermedades_cronicas = enfermedades_cronicas or None
-                analisis_obj.medicamentos_actuales = medicamentos_actuales or None
-                analisis_obj.observaciones = observaciones or None
-                analisis_obj.diagnostico = diagnostico or None
+
+                # Guardar / actualizar análisis
+                analisis_obj, _ = AnalisisMedico.objects.get_or_create(
+                    paciente=paciente_seleccionado
+                )
+
+                analisis_obj.peso = request.POST.get('peso') or None
+                analisis_obj.altura = request.POST.get('altura') or None
+                analisis_obj.tipo_sangre = request.POST.get('tipo_sangre') or None
+                analisis_obj.sexo = request.POST.get('sexo') or None
+                analisis_obj.alergias = request.POST.get('alergias') or None
+                analisis_obj.enfermedades_cronicas = request.POST.get('enfermedades_cronicas') or None
+                analisis_obj.medicamentos_actuales = request.POST.get('medicamentos_actuales') or None
+                analisis_obj.observaciones = request.POST.get('observaciones') or None
+                analisis_obj.diagnostico = request.POST.get('diagnostico') or None
                 analisis_obj.save()
-                # Redirigir para mostrar los datos actualizados (POST/Redirect/GET)
-                return redirect(f"{request.path}?paciente={paciente_seleccionado.id}")
+
+                # 👉 BOTÓN IA
+                if "generar_ia" in request.POST:
+                    resumen_ia = asistente_medico(paciente_seleccionado, analisis_obj)
 
             # Leer datos médicos reales
             try:
@@ -267,6 +268,7 @@ def vista_doctor(request):
         'citas_paciente': citas_paciente,
         'analisis': analisis,
         'citas_por_dia_lista': citas_por_dia_lista,
+        'resumen_ia': resumen_ia,
     })
 
 def perfil_estudiante(request):

@@ -12,9 +12,10 @@
     margin-left: auto;
     margin-right: auto;
   }
+
   .dia-panel {
     flex: 1;
-    background: rgba(255,255,255,0.13);
+    background: rgba(255, 255, 255, 0.13);
     border-radius: 18px;
     box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18);
     backdrop-filter: blur(10px);
@@ -27,6 +28,7 @@
     align-items: stretch;
     margin-bottom: 0;
   }
+
   .dia-header {
     font-weight: 700;
     color: #4fa7ff;
@@ -36,6 +38,7 @@
     letter-spacing: 1px;
     text-shadow: 0 2px 8px #4fa7ff22;
   }
+
   .dia-fecha {
     font-size: 1.01em;
     color: #b3d8ff;
@@ -44,6 +47,7 @@
     font-weight: 500;
     letter-spacing: 0.5px;
   }
+
   .cita-card {
     background: rgba(44, 47, 72, 0.18);
     border: 1.5px solid #4fa7ff33;
@@ -57,11 +61,13 @@
     position: relative;
     overflow: hidden;
   }
+
   .cita-card:hover {
     box-shadow: 0 4px 18px 0 #4fa7ff33;
     border: 2px solid #4fa7ff;
     background: rgba(44, 47, 72, 0.33);
   }
+
   .cita-card b {
     color: #4fa7ff;
     font-weight: 600;
@@ -69,6 +75,7 @@
     display: inline-block;
     margin-bottom: 2px;
   }
+
   .cita-card .cita-hora {
     color: #fff;
     background: #4fa7ff;
@@ -81,6 +88,7 @@
     letter-spacing: 1px;
     box-shadow: 0 0 8px #4fa7ff22;
   }
+
   .doctor-dashboard {
     display: flex;
     flex-wrap: wrap;
@@ -90,8 +98,9 @@
     margin: 0 auto;
     box-sizing: border-box;
   }
+
   .panel {
-    background: rgba(255,255,255,0.13);
+    background: rgba(255, 255, 255, 0.13);
     border-radius: 18px;
     box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18);
     backdrop-filter: blur(10px);
@@ -102,12 +111,15 @@
     margin-bottom: 24px;
     position: relative;
   }
-  .panel h2, .panel h3 {
+
+  .panel h2,
+  .panel h3 {
     color: #4fa7ff;
     margin-bottom: 16px;
     font-size: 1.2rem;
     font-weight: 700;
   }
+
   .panel-pacientes {
     background: rgba(17, 34, 64, 0.85) !important;
     border: 2px solid #4fa7ff !important;
@@ -118,6 +130,7 @@
     z-index: 3;
     pointer-events: auto;
   }
+
   .panel-pacientes h2 {
     color: #4fa7ff;
     margin-bottom: 20px;
@@ -125,6 +138,7 @@
     font-size: 1.3rem;
     font-weight: 700;
   }
+
   .panel-pacientes .pacientes-lista {
     background: transparent;
     border-radius: 8px;
@@ -133,8 +147,9 @@
     max-height: 400px;
     overflow-y: auto;
   }
+
   .panel-pacientes .paciente-item {
-    background: rgba(255,255,255,0.08);
+    background: rgba(255, 255, 255, 0.08);
     border: 1px solid #4fa7ff44;
     border-radius: 8px;
     margin-bottom: 10px;
@@ -149,21 +164,26 @@
     text-decoration: none;
     box-shadow: 0 2px 8px rgba(79, 167, 255, 0.08);
   }
-  .panel-pacientes .paciente-item.selected, .panel-pacientes .paciente-item:hover {
+
+  .panel-pacientes .paciente-item.selected,
+  .panel-pacientes .paciente-item:hover {
     background: #4fa7ff;
     color: #112240;
     border: 2px solid #4fa7ff;
   }
+
   .panel-pacientes .paciente-item:last-child {
     margin-bottom: 0;
   }
+
   .pacientes-lista {
     max-height: 400px;
     overflow-y: auto;
-    background: rgba(44,47,72,0.13);
+    background: rgba(44, 47, 72, 0.13);
     border-radius: 10px;
     padding: 10px;
   }
+
   .paciente-item {
     padding: 10px 8px;
     border-bottom: 1px solid #4fa7ff33;
@@ -171,16 +191,26 @@
     color: #fff;
     transition: background 0.2s;
   }
-  .paciente-item:last-child { border-bottom: none; }
-  .paciente-item:hover, .paciente-item.selected {
+
+  .paciente-item:last-child {
+    border-bottom: none;
+  }
+
+  .paciente-item:hover,
+  .paciente-item.selected {
     background: #4fa7ff33;
     color: #4fa7ff;
   }
+
   .info-paciente {
     margin-bottom: 18px;
     color: #fff;
   }
-  .info-paciente strong { color: #4fa7ff; }
+
+  .info-paciente strong {
+    color: #4fa7ff;
+  }
+
   .historial-citas-doctor {
     background: rgba(26, 29, 51, 0.7);
     border: 1px solid #4fa7ff;
@@ -191,23 +221,30 @@
     overflow-y: auto;
     margin-bottom: 10px;
   }
+
   .historial-citas-doctor ul {
     list-style: none;
     padding: 0;
     margin: 0;
   }
+
   .historial-citas-doctor li {
     border-bottom: 1px solid #4fa7ff33;
     padding: 8px 0;
     margin-bottom: 6px;
   }
-  .historial-citas-doctor li:last-child { border-bottom: none; }
+
+  .historial-citas-doctor li:last-child {
+    border-bottom: none;
+  }
+
   .form-analisis {
-    background: rgba(255,255,255,0.08);
+    background: rgba(255, 255, 255, 0.08);
     border-radius: 10px;
     padding: 12px 10px;
     margin-top: 10px;
   }
+
   .form-analisis label {
     color: #4fa7ff;
     font-weight: 600;
@@ -216,16 +253,20 @@
     text-align: left;
     font-size: 1rem;
   }
-  .form-analisis input, .form-analisis select, .form-analisis textarea {
+
+  .form-analisis input,
+  .form-analisis select,
+  .form-analisis textarea {
     width: 100%;
     padding: 7px;
     border-radius: 6px;
     border: 1px solid #4fa7ff44;
-    background: rgba(255,255,255,0.13);
+    background: rgba(255, 255, 255, 0.13);
     color: #112240;
     margin-bottom: 8px;
     font-size: 1rem;
   }
+
   .form-analisis button {
     background: #4fa7ff;
     color: #fff;
@@ -240,39 +281,47 @@
     cursor: pointer;
     transition: background 0.3s, color 0.3s;
   }
+
   .form-analisis button:hover {
     background: #fff;
     color: #4fa7ff;
     border: 2px solid #4fa7ff;
   }
+
   @media (max-width: 900px) {
-    .doctor-dashboard { flex-direction: column; }
-    .panel { min-width: 0; width: 100%; }
+    .doctor-dashboard {
+      flex-direction: column;
+    }
+
+    .panel {
+      min-width: 0;
+      width: 100%;
+    }
   }
 </style>
 <div class="semana-grid">
   {% for dia_citas in citas_por_dia_lista %}
-    <div class="dia-panel">
-      <div class="dia-header">
-        {{ dia_citas.dia|date:"l"|slice:":3"|title }}
-      </div>
-      <div class="dia-fecha">{{ dia_citas.dia|date:"d/m/Y" }}</div>
-      <div style="flex:1;">
-        {% if dia_citas.citas %}
-          {% for cita in dia_citas.citas %}
-            <div class="cita-card">
-              <b>Motivo:</b><br>
-              {{ cita.motivo }}<br>
-              <span class="cita-hora">Orden: {{ cita.orden }}</span><br>
-              <b>Paciente:</b><br>
-              {{ cita.estudiante.nombres }} {{ cita.estudiante.apellido_paterno }}
-            </div>
-          {% endfor %}
-        {% else %}
-          <div style="color:#aaa; text-align:center;">Sin citas</div>
-        {% endif %}
-      </div>
+  <div class="dia-panel">
+    <div class="dia-header">
+      {{ dia_citas.dia|date:"l"|slice:":3"|title }}
     </div>
+    <div class="dia-fecha">{{ dia_citas.dia|date:"d/m/Y" }}</div>
+    <div style="flex:1;">
+      {% if dia_citas.citas %}
+      {% for cita in dia_citas.citas %}
+      <div class="cita-card">
+        <b>Motivo:</b><br>
+        {{ cita.motivo }}<br>
+        <span class="cita-hora">Orden: {{ cita.orden }}</span><br>
+        <b>Paciente:</b><br>
+        {{ cita.estudiante.nombres }} {{ cita.estudiante.apellido_paterno }}
+      </div>
+      {% endfor %}
+      {% else %}
+      <div style="color:#aaa; text-align:center;">Sin citas</div>
+      {% endif %}
+    </div>
+  </div>
   {% endfor %}
 </div>
 <div class="doctor-dashboard">
@@ -281,70 +330,97 @@
     <h2><i class="fas fa-users"></i> Pacientes</h2>
     <div class="pacientes-lista">
       {% for paciente in pacientes %}
-        <div class="paciente-item{% if paciente.id == paciente_seleccionado.id %} selected{% endif %}" onclick="window.location='?paciente={{ paciente.id }}'">
-          {{ paciente.nombres }} {{ paciente.apellido_paterno }}
-        </div>
+      <div class="paciente-item{% if paciente.id == paciente_seleccionado.id %} selected{% endif %}"
+        onclick="window.location='?paciente={{ paciente.id }}'">
+        {{ paciente.nombres }} {{ paciente.apellido_paterno }}
+      </div>
       {% empty %}
-        <div style="color:#aaa;">No hay pacientes.</div>
+      <div style="color:#aaa;">No hay pacientes.</div>
       {% endfor %}
     </div>
   </div>
   <!-- Panel de información y edición -->
   <div class="panel panel-pacientes" style="flex:2;min-width:320px;">
     {% if paciente_seleccionado %}
-      <h2><i class="fas fa-user"></i> Información del Paciente</h2>
-      <div class="info-paciente">
-        <strong>Nombre:</strong> {{ paciente_seleccionado.nombres }} {{ paciente_seleccionado.apellido_paterno }} {{ paciente_seleccionado.apellido_materno }}<br>
-        <strong>DNI:</strong> {{ paciente_seleccionado.dni }}<br>
-        <strong>Teléfono:</strong> {{ paciente_seleccionado.telefono }}<br>
-        <strong>Dirección:</strong> {{ paciente_seleccionado.direccion }}<br>
-        <strong>Fecha de Nacimiento:</strong> {{ paciente_seleccionado.fecha_nacimiento }}<br>
-        <strong>Código Matrícula:</strong> {{ paciente_seleccionado.codigo_matricula }}<br>
-        <strong>Carrera:</strong> {{ paciente_seleccionado.get_carrera_display }}
+    <h2><i class="fas fa-user"></i> Información del Paciente</h2>
+    <div class="info-paciente">
+      <strong>Nombre:</strong> {{ paciente_seleccionado.nombres }} {{ paciente_seleccionado.apellido_paterno }} {{
+      paciente_seleccionado.apellido_materno }}<br>
+      <strong>DNI:</strong> {{ paciente_seleccionado.dni }}<br>
+      <strong>Teléfono:</strong> {{ paciente_seleccionado.telefono }}<br>
+      <strong>Dirección:</strong> {{ paciente_seleccionado.direccion }}<br>
+      <strong>Fecha de Nacimiento:</strong> {{ paciente_seleccionado.fecha_nacimiento }}<br>
+      <strong>Código Matrícula:</strong> {{ paciente_seleccionado.codigo_matricula }}<br>
+      <strong>Carrera:</strong> {{ paciente_seleccionado.get_carrera_display }}
+    </div>
+    <div class="historial-citas-doctor">
+      <h3>Historial de Citas</h3>
+      <ul>
+        {% for cita in citas_paciente %}
+        <li>
+          <strong>Fecha:</strong> {{ cita.fecha|date:"d/m/Y" }}<br>
+          <strong>Motivo:</strong> {{ cita.motivo }}<br>
+          <strong>Estado:</strong> {{ cita.estado }}<br>
+          <strong>Diagnóstico:</strong> {{ cita.diagnostico|default:'-' }}
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+    <form class="form-analisis" method="POST" action="?paciente={{ paciente_seleccionado.id }}">
+
+      {% csrf_token %}
+      <h3><i class="fas fa-notes-medical"></i> Registrar/Editar Datos Médicos</h3>
+      <label for="peso">Peso (kg):</label>
+      <input type="number" step="0.1" name="peso" id="peso"
+        value="{{ analisis.peso|default_if_none:''|floatformat:'-2' }}">
+      <label for="altura">Altura (cm):</label>
+      <input type="number" step="0.1" name="altura" id="altura"
+        value="{{ analisis.altura|default_if_none:''|floatformat:'-2' }}">
+      <label for="tipo_sangre">Tipo de Sangre:</label>
+      <input type="text" name="tipo_sangre" id="tipo_sangre" value="{{ analisis.tipo_sangre|default:'' }}">
+      <label for="sexo">Sexo:</label>
+      <select name="sexo" id="sexo">
+        <option value="" {% if not analisis.sexo %}selected{% endif %}>-</option>
+        <option value="Masculino" {% if analisis.sexo == "Masculino" %}selected{% endif %}>
+          Masculino
+        </option>
+        <option value="Femenino" {% if analisis.sexo == "Femenino" %}selected{% endif %}>
+          Femenino
+        </option>
+        <option value="Otro" {% if analisis.sexo == "Otro" %}selected{% endif %}>
+          Otro
+        </option>
+      </select>
+      <label for="alergias">Alergias:</label>
+      <input type="text" name="alergias" id="alergias" value="{{ analisis.alergias|default:'' }}">
+      <label for="enfermedades_cronicas">Enfermedades crónicas:</label>
+      <textarea name="enfermedades_cronicas"
+        id="enfermedades_cronicas">{{ analisis.enfermedades_cronicas|default:'' }}</textarea>
+      <label for="medicamentos_actuales">Medicamentos actuales:</label>
+      <textarea name="medicamentos_actuales"
+        id="medicamentos_actuales">{{ analisis.medicamentos_actuales|default:'' }}</textarea>
+      <label for="observaciones">Observaciones:</label>
+      <textarea name="observaciones" id="observaciones">{{ analisis.observaciones|default:'' }}</textarea>
+      <label for="diagnostico">Diagnóstico:</label>
+      <textarea name="diagnostico" id="diagnostico">{{ analisis.diagnostico|default:'' }}</textarea>
+      <button type="submit"><i class="fas fa-save"></i> Guardar Datos</button>
+      <hr>
+
+      <h3>🤖 Asistente Médico IA</h3>
+
+      <button type="submit" name="generar_ia">
+        Generar resumen clínico con IA
+      </button>
+
+      {% if resumen_ia %}
+      <div
+        style="margin-top:15px; padding:10px; border:1px solid #4fa7ff; border-radius:8px; background:rgba(79,167,255,0.08); color:#fff;">
+        {{ resumen_ia|linebreaks }}
       </div>
-      <div class="historial-citas-doctor">
-        <h3>Historial de Citas</h3>
-        <ul>
-          {% for cita in citas_paciente %}
-          <li>
-            <strong>Fecha:</strong> {{ cita.fecha|date:"d/m/Y" }}<br>
-            <strong>Motivo:</strong> {{ cita.motivo }}<br>
-            <strong>Estado:</strong> {{ cita.estado }}<br>
-            <strong>Diagnóstico:</strong> {{ cita.diagnostico|default:'-' }}
-          </li>
-          {% endfor %}
-        </ul>
-      </div>
-      <form class="form-analisis" method="POST" action="?paciente={{ paciente_seleccionado.id }}">
-        {% csrf_token %}
-        <h3><i class="fas fa-notes-medical"></i> Registrar/Editar Datos Médicos</h3>
-        <label for="peso">Peso (kg):</label>
-        <input type="number" step="0.1" name="peso" id="peso" value="{{ analisis.peso|default_if_none:''|floatformat:'-2' }}">
-        <label for="altura">Altura (cm):</label>
-        <input type="number" step="0.1" name="altura" id="altura" value="{{ analisis.altura|default_if_none:''|floatformat:'-2' }}">
-        <label for="tipo_sangre">Tipo de Sangre:</label>
-        <input type="text" name="tipo_sangre" id="tipo_sangre" value="{{ analisis.tipo_sangre|default:'' }}">
-        <label for="sexo">Sexo:</label>
-        <select name="sexo" id="sexo">
-          <option value="" {% if not analisis.sexo %}selected{% endif %}>-</option>
-          <option value="Masculino" {% if analisis.sexo == 'Masculino' %}selected{% endif %}>Masculino</option>
-          <option value="Femenino" {% if analisis.sexo == 'Femenino' %}selected{% endif %}>Femenino</option>
-          <option value="Otro" {% if analisis.sexo == 'Otro' %}selected{% endif %}>Otro</option>
-        </select>
-        <label for="alergias">Alergias:</label>
-        <input type="text" name="alergias" id="alergias" value="{{ analisis.alergias|default:'' }}">
-        <label for="enfermedades_cronicas">Enfermedades crónicas:</label>
-        <textarea name="enfermedades_cronicas" id="enfermedades_cronicas">{{ analisis.enfermedades_cronicas|default:'' }}</textarea>
-        <label for="medicamentos_actuales">Medicamentos actuales:</label>
-        <textarea name="medicamentos_actuales" id="medicamentos_actuales">{{ analisis.medicamentos_actuales|default:'' }}</textarea>
-        <label for="observaciones">Observaciones:</label>
-        <textarea name="observaciones" id="observaciones">{{ analisis.observaciones|default:'' }}</textarea>
-        <label for="diagnostico">Diagnóstico:</label>
-        <textarea name="diagnostico" id="diagnostico">{{ analisis.diagnostico|default:'' }}</textarea>
-        <button type="submit"><i class="fas fa-save"></i> Guardar Datos</button>
-      </form>
+      {% endif %}
+    </form>
     {% else %}
-      <div style="color:#aaa;">Selecciona un paciente para ver y editar su información.</div>
+    <div style="color:#aaa;">Selecciona un paciente para ver y editar su información.</div>
     {% endif %}
   </div>
 </div>
